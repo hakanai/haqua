@@ -1,0 +1,4 @@
+.idea/dictionaries/*.xml
+.idea/workspace.xml
+build/*
+out/*
