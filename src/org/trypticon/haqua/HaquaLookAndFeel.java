@@ -21,6 +21,7 @@ package org.trypticon.haqua;
 import com.apple.laf.AquaLookAndFeel;
 
 import javax.swing.LayoutStyle;
+import javax.swing.PopupFactory;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
@@ -39,6 +40,7 @@ public class HaquaLookAndFeel extends AquaLookAndFeel {
     protected void initClassDefaults(UIDefaults defaults) {
         super.initClassDefaults(defaults);
 
+        defaults.put("ComboBoxUI", "org.trypticon.haqua.HaquaComboBoxUI");
         defaults.put("PanelUI", "org.trypticon.haqua.HaquaPanelUI");
         defaults.put("ScrollPaneUI", "org.trypticon.haqua.HaquaScrollPaneUI");
         defaults.put("ViewportUI", "org.trypticon.haqua.HaquaViewportUI");
