@@ -21,9 +21,9 @@ package org.trypticon.haqua;
 import com.apple.laf.AquaLookAndFeel;
 
 import javax.swing.LayoutStyle;
-import javax.swing.PopupFactory;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
 
 /**
  * Top-level class for the Haqua look and feel.
@@ -41,6 +41,7 @@ public class HaquaLookAndFeel extends AquaLookAndFeel {
         super.initClassDefaults(defaults);
 
         defaults.put("ComboBoxUI", "org.trypticon.haqua.HaquaComboBoxUI");
+        defaults.put("TableUI", "org.trypticon.haqua.HaquaTableUI");
         defaults.put("PanelUI", "org.trypticon.haqua.HaquaPanelUI");
         defaults.put("ScrollPaneUI", "org.trypticon.haqua.HaquaScrollPaneUI");
         defaults.put("ViewportUI", "org.trypticon.haqua.HaquaViewportUI");
@@ -56,6 +57,14 @@ public class HaquaLookAndFeel extends AquaLookAndFeel {
         defaults.put("TitledBorder.border", defaults.get("TitledBorder.aquaVariant"));
         // Native apps use the 11pt variant, not 13pt.
         defaults.put("TitledBorder.font", controlSmallFont);
+
+        // Colour to use when striping. This one was taken from Interface Builder, so I'm not confident it's correct for all OSX.
+        defaults.put("Table.alternateRowColor", new ColorUIResource(236, 241, 247));
+        // Set margins to 0 to make selections appear properly contiguous.
+        defaults.put("Table.rowMargin", 0);
+        defaults.put("Table.columnMargin", 0);
+        // Paint table backgrounds all the way down the viewport.
+        defaults.put("Table.fillsViewportHeight", true);
 
         // Opaque JPanel looks wrong inside JTabbedPane and probably elsewhere.
         defaults.put("Panel.opaque", false);
