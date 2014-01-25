@@ -3,7 +3,7 @@ Haqua - A collection of hacks to work around issues in the Aqua look and feel
 Copyright (C) 2014  Trejkaz, Haqua Project
 
 
-USAGE
+Usage
 -----
 
 Usage is the same as any other custom look and feel:
@@ -19,7 +19,43 @@ Usage is the same as any other custom look and feel:
     }
 
 
-BUILDING
+Hacks in use
+------------
+
+JComboBox:
+
+* Popup sets its JList background to match the popup itself.
+
+JTable:
+
+* Rows are painted with stripes.
+* Row and column spacing is set to 0 to eliminate the seams you would usually see.
+* Table paints the background all the way to the bottom of the viewport it's placed inside.
+
+JTree:
+
+* Selection colour paints across the entire row (known issue: animation for the disclosure
+  triangle on selected rows does not occur at the moment, because of the way this hack was
+  implemented.)
+* Mouse clicks on the row select the node (instead of just clicks on the node.)
+* Selected nodes paint using the proper inactive alternate colours when the window is inactive.
+
+JPanel:
+
+* Panels are non-opaque by default, to fix appearance when placed inside JTabbedPane.
+
+JScrollPane:
+
+* Scroll panes (and their contained viewports) are non-opaque by default, to fix appearance
+  the pane contains a non-opaque component.
+
+TitledBorder:
+
+* Borders appear in the proper Aqua style instead of the default etched border.
+* Font size is set to match native apps better.
+
+
+Building
 --------
 
 You'll need a Java build environment.  I'm developing this on Java 7 at
