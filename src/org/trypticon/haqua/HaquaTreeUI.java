@@ -26,6 +26,7 @@ import javax.swing.JComponent;
 import javax.swing.JTree;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -40,6 +41,8 @@ import java.awt.image.BufferedImage;
 public class HaquaTreeUI extends AquaTreeUI {
     private Icon selectedCollapsedIcon;
     private Icon selectedExpandedIcon;
+    private Icon pressedSelectedCollapsedIcon;
+    private Icon pressedSelectedExpandedIcon;
 
     @SuppressWarnings("UnusedDeclaration") // called via reflection
     public static ComponentUI createUI(JComponent component) {
@@ -58,17 +61,34 @@ public class HaquaTreeUI extends AquaTreeUI {
                 "Tree.collapsedIcon" : "Tree.rightToLeftCollapsedIcon");
         Icon normalExpandedIcon = UIManager.getIcon("Tree.expandedIcon");
 
-        selectedExpandedIcon = createWhiteVersion(normalExpandedIcon);
-        selectedCollapsedIcon = createWhiteVersion(normalCollapsedIcon);
+        selectedExpandedIcon = createAlternateColourVersion(normalExpandedIcon, Color.WHITE);
+        selectedCollapsedIcon = createAlternateColourVersion(normalCollapsedIcon, Color.WHITE);
+
+        // Colour of the disclosure triangle when you are pressing it is subtly different.
+        Color selectionBackground = UIManager.getColor("Tree.selectionBackground");
+        Color pressedDisclosureTriangleForeground = new Color(
+                derivePressedColourComponent(selectionBackground.getRed()),
+                derivePressedColourComponent(selectionBackground.getGreen()),
+                derivePressedColourComponent(selectionBackground.getBlue()));
+        pressedSelectedExpandedIcon = createAlternateColourVersion(normalExpandedIcon, pressedDisclosureTriangleForeground);
+        pressedSelectedCollapsedIcon = createAlternateColourVersion(normalCollapsedIcon, pressedDisclosureTriangleForeground);
     }
 
-    private Icon createWhiteVersion(Icon icon) {
-        class WhitenFilter extends PerPixelFilter {
+    private int derivePressedColourComponent(int component) {
+        // Experiment shows that the slightly shaded colour you get when pressed is:
+        //  X' = 153 + (255-153) * X / 255 = 164
+        // There is probably a way to do this in a single shot for all three components...
+        return (int) Math.floor(153 + (255 - 153) * (double) component / 255);
+    }
+
+    private Icon createAlternateColourVersion(Icon icon, final Color colour) {
+        class RecolourFilter extends PerPixelFilter {
             @Override
             protected void manipulatePixels(int[] pixels) {
+                int rgb = colour.getRGB();
                 for (int i = 0; i < pixels.length; i++) {
-                    // Leave the alpha alone, change all RGB values to white.
-                    pixels[i] |= 0xFFFFFF;
+                    // Leave the alpha alone, change all RGB values to the target.
+                    pixels[i] = (pixels[i] & 0xFF000000) | (rgb & 0xFFFFFF);
                 }
             }
         }
@@ -82,41 +102,34 @@ public class HaquaTreeUI extends AquaTreeUI {
             graphics.dispose();
         }
 
-        new WhitenFilter().filter(image, image);
+        new RecolourFilter().filter(image, image);
         return new ImageIcon(image);
     }
 
     @Override
-    public void paint(Graphics graphics, JComponent component) {
-        // Paint the full row for selected rows, not just the node.
-        paintRows(graphics, (JTree) component);
-        super.paint(graphics, component);
+    protected void paintRow(Graphics g, Rectangle clipBounds, Insets insets, Rectangle bounds, TreePath path, int row, boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) {
+        // Paint the full row in the appropriate background colour, not just the node.
+        if (tree.isPathSelected(path)) {
+            Color selectionBackground = UIManager.getColor(
+                    FocusUtils.isInActiveWindow(tree) ? "Tree.selectionBackground" : "Tree.selectionInactiveBackground");
+            g.setColor(selectionBackground);
+            // A purist might say this should be a round-rect with arc diameter equal to the row height
+            // and flat edges above/below if the row in that direction is also selected.
+            g.fillRect(clipBounds.x, bounds.y, clipBounds.width, bounds.height);
+        }
+
+        // This was already been called by DefaultTreeUI, but before calling paintRow(), so we just painted over it.
+        // I guess ask the Swing developers what they were smoking when they decided to paint them that way around.
+        paintExpandControl(g, clipBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf);
+
+        // This will then paint the node itself.
+        super.paintRow(g, clipBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf);
     }
 
-    protected void paintRows(final Graphics g, final JTree tree) {
-        Rectangle clipBounds = g.getClipBounds();
-
-        int beginRow = getRowForPath(tree, getClosestPathForLocation(tree, 0, clipBounds.y));
-        int endRow = getRowForPath(tree, getClosestPathForLocation(tree, 0, clipBounds.y + clipBounds.height - 1));
-        if (beginRow < 0 || endRow < 0) {
-            return;
-        }
-
-        Color selectionBackground = UIManager.getColor("Tree.selectionBackground");
-
-        for (int i = beginRow; i <= endRow; ++i) {
-            TreePath path = getPathForRow(tree, i);
-
-            if (tree.isPathSelected(path)) {
-                final Rectangle rowBounds = getPathBounds(tree, getPathForRow(tree, i));
-                if (rowBounds != null) {
-                    g.setColor(selectionBackground);
-                    // A purist might say this should be a round-rect with arc diameter equal to the row height
-                    // and flat edges above/below if the row in that direction is also selected.
-                    g.fillRect(clipBounds.x, rowBounds.y, clipBounds.width, rowBounds.height);
-                }
-            }
-        }
+    @Override
+    protected TreeCellRenderer createDefaultCellRenderer() {
+        // Custom renderer fixes the colours of the tree node itself when the window is inactive.
+        return new HaquaTreeCellRenderer();
     }
 
     @Override
@@ -160,15 +173,16 @@ public class HaquaTreeUI extends AquaTreeUI {
                                       final Insets insets, final Rectangle bounds,
                                       final TreePath path, final int row,
                                       final boolean isExpanded, final boolean hasBeenExpanded, final boolean isLeaf) {
-        if (tree.isPathSelected(path)) {
+        if (tree.isPathSelected(path) && FocusUtils.isInActiveWindow(tree)) {
+
             // Trick the superclass into thinking we're using custom icons, so that it won't use its own
             // native painter which paints the wrong colour.
             // This causes us to lose the animation, but this is less bad than the arrow being the wrong colour.
             Icon oldExpandedIcon = getExpandedIcon();
             Icon oldCollapsedIcon = getCollapsedIcon();
             try {
-                setExpandedIcon(selectedExpandedIcon);
-                setCollapsedIcon(selectedCollapsedIcon);
+                setExpandedIcon(fIsPressed ? pressedSelectedExpandedIcon : selectedExpandedIcon);
+                setCollapsedIcon(fIsPressed ? pressedSelectedCollapsedIcon : selectedCollapsedIcon);
                 super.paintExpandControl(g, clipBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf);
             } finally {
                 setExpandedIcon(oldExpandedIcon);
