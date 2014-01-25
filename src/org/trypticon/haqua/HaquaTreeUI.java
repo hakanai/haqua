@@ -1,0 +1,181 @@
+/*
+ * Haqua - a collection of hacks to work around issues in the Aqua look and feel
+ * Copyright (C) 2014  Trejkaz, Haqua Project
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package org.trypticon.haqua;
+
+import com.apple.laf.AquaTreeUI;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JTree;
+import javax.swing.UIManager;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.tree.TreePath;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+
+/**
+ * @author trejkaz
+ */
+public class HaquaTreeUI extends AquaTreeUI {
+    private Icon selectedCollapsedIcon;
+    private Icon selectedExpandedIcon;
+
+    @SuppressWarnings("UnusedDeclaration") // called via reflection
+    public static ComponentUI createUI(JComponent component) {
+        return new HaquaTreeUI();
+    }
+
+    @Override
+    public void installUI(JComponent c) {
+        super.installUI(c);
+        initialiseIcons();
+    }
+
+    private void initialiseIcons() {
+        Icon normalCollapsedIcon = UIManager.getIcon(
+                tree.getComponentOrientation().isLeftToRight() ?
+                "Tree.collapsedIcon" : "Tree.rightToLeftCollapsedIcon");
+        Icon normalExpandedIcon = UIManager.getIcon("Tree.expandedIcon");
+
+        selectedExpandedIcon = createWhiteVersion(normalExpandedIcon);
+        selectedCollapsedIcon = createWhiteVersion(normalCollapsedIcon);
+    }
+
+    private Icon createWhiteVersion(Icon icon) {
+        class WhitenFilter extends PerPixelFilter {
+            @Override
+            protected void manipulatePixels(int[] pixels) {
+                for (int i = 0; i < pixels.length; i++) {
+                    // Leave the alpha alone, change all RGB values to white.
+                    pixels[i] |= 0xFFFFFF;
+                }
+            }
+        }
+
+        // Same image type used by AquaIcon itself.
+        final BufferedImage image = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB_PRE);
+        Graphics2D graphics = image.createGraphics();
+        try {
+            icon.paintIcon(tree, graphics, 0, 0);
+        } finally {
+            graphics.dispose();
+        }
+
+        new WhitenFilter().filter(image, image);
+        return new ImageIcon(image);
+    }
+
+    @Override
+    public void paint(Graphics graphics, JComponent component) {
+        // Paint the full row for selected rows, not just the node.
+        paintRows(graphics, (JTree) component);
+        super.paint(graphics, component);
+    }
+
+    protected void paintRows(final Graphics g, final JTree tree) {
+        Rectangle clipBounds = g.getClipBounds();
+
+        int beginRow = getRowForPath(tree, getClosestPathForLocation(tree, 0, clipBounds.y));
+        int endRow = getRowForPath(tree, getClosestPathForLocation(tree, 0, clipBounds.y + clipBounds.height - 1));
+        if (beginRow < 0 || endRow < 0) {
+            return;
+        }
+
+        Color selectionBackground = UIManager.getColor("Tree.selectionBackground");
+
+        for (int i = beginRow; i <= endRow; ++i) {
+            TreePath path = getPathForRow(tree, i);
+
+            if (tree.isPathSelected(path)) {
+                final Rectangle rowBounds = getPathBounds(tree, getPathForRow(tree, i));
+                if (rowBounds != null) {
+                    g.setColor(selectionBackground);
+                    // A purist might say this should be a round-rect with arc diameter equal to the row height
+                    // and flat edges above/below if the row in that direction is also selected.
+                    g.fillRect(clipBounds.x, rowBounds.y, clipBounds.width, rowBounds.height);
+                }
+            }
+        }
+    }
+
+    @Override
+    public Rectangle getPathBounds(JTree tree, TreePath path) {
+        Rectangle bounds = super.getPathBounds(tree, path);
+        Insets insets = tree.getInsets();
+        // Expand the path bounds to cover the entire row. The main effect of this is that clicking outside of
+        // the node will still select the row.
+        bounds.x = insets.left;
+        bounds.width = tree.getWidth() - insets.left - insets.right;
+        return bounds;
+    }
+
+    @Override
+    public TreePath getClosestPathForLocation(JTree treeLocal, int x, int y) {
+        return super.getClosestPathForLocation(treeLocal, x, y);
+    }
+
+    @Override
+    protected void handleExpandControlClick(TreePath path, final int mouseX, final int mouseY) {
+        if (tree.isPathSelected(path)) {
+            // Trick the handler the superclass will create into storing the selection background colour
+            // into a field it uses when it clears the background before drawing the icon.
+            Color oldBackground = tree.getBackground();
+            boolean oldIgnoreRepaint = tree.getIgnoreRepaint();
+            try {
+                tree.setIgnoreRepaint(true);
+                tree.setBackground(UIManager.getColor("Tree.selectionBackground"));
+                super.handleExpandControlClick(path, mouseX, mouseY);
+            } finally {
+                tree.setIgnoreRepaint(oldIgnoreRepaint);
+                tree.setBackground(oldBackground);
+            }
+        } else {
+            super.handleExpandControlClick(path, mouseX, mouseY);
+        }
+    }
+
+    @Override
+    protected void paintExpandControl(final Graphics g, final Rectangle clipBounds,
+                                      final Insets insets, final Rectangle bounds,
+                                      final TreePath path, final int row,
+                                      final boolean isExpanded, final boolean hasBeenExpanded, final boolean isLeaf) {
+        if (tree.isPathSelected(path)) {
+            // Trick the superclass into thinking we're using custom icons, so that it won't use its own
+            // native painter which paints the wrong colour.
+            // This causes us to lose the animation, but this is less bad than the arrow being the wrong colour.
+            Icon oldExpandedIcon = getExpandedIcon();
+            Icon oldCollapsedIcon = getCollapsedIcon();
+            try {
+                setExpandedIcon(selectedExpandedIcon);
+                setCollapsedIcon(selectedCollapsedIcon);
+                super.paintExpandControl(g, clipBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf);
+            } finally {
+                setExpandedIcon(oldExpandedIcon);
+                setCollapsedIcon(oldCollapsedIcon);
+            }
+        } else {
+            super.paintExpandControl(g, clipBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf);
+        }
+    }
+}

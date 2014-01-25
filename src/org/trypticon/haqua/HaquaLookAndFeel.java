@@ -26,7 +26,19 @@ import javax.swing.UIManager;
 import javax.swing.plaf.ColorUIResource;
 
 /**
- * Top-level class for the Haqua look and feel.
+ * <p>Top-level class for the Haqua look and feel.</p>
+ * 
+ * <p>Your usual usage of this class is going to look like this:</p>
+ * <pre>
+    if ("com.apple.laf.AquaLookAndFeel".equals(UIManager.getSystemLookAndFeelClassName())) {
+        try {
+            UIManager.setLookAndFeel("org.trypticon.haqua.HaquaLookAndFeel");
+        } catch (Exception e) {
+            // Fallback logic here if you want it, but the default on Mac OS X is already
+            // the system look and feel, so you might just be able to ignore it.
+        }
+    }
+ * </pre>
  *
  * @author trejkaz
  */
@@ -42,6 +54,7 @@ public class HaquaLookAndFeel extends AquaLookAndFeel {
 
         defaults.put("ComboBoxUI", "org.trypticon.haqua.HaquaComboBoxUI");
         defaults.put("TableUI", "org.trypticon.haqua.HaquaTableUI");
+        defaults.put("TreeUI", "org.trypticon.haqua.HaquaTreeUI");
         defaults.put("PanelUI", "org.trypticon.haqua.HaquaPanelUI");
         defaults.put("ScrollPaneUI", "org.trypticon.haqua.HaquaScrollPaneUI");
         defaults.put("ViewportUI", "org.trypticon.haqua.HaquaViewportUI");
