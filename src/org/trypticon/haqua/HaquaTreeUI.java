@@ -147,8 +147,8 @@ public class HaquaTreeUI extends AquaTreeUI {
                 tree.setBackground(UIManager.getColor("Tree.selectionBackground"));
                 super.handleExpandControlClick(path, mouseX, mouseY);
             } finally {
-                tree.setIgnoreRepaint(oldIgnoreRepaint);
                 tree.setBackground(oldBackground);
+                tree.setIgnoreRepaint(oldIgnoreRepaint);
             }
         } else {
             super.handleExpandControlClick(path, mouseX, mouseY);
