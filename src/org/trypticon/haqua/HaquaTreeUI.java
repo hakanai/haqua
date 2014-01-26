@@ -137,11 +137,13 @@ public class HaquaTreeUI extends AquaTreeUI {
     @Override
     public Rectangle getPathBounds(JTree tree, TreePath path) {
         Rectangle bounds = super.getPathBounds(tree, path);
-        Insets insets = tree.getInsets();
-        // Expand the path bounds to cover the entire row. The main effect of this is that clicking outside of
-        // the node will still select the row.
-        bounds.x = insets.left;
-        bounds.width = tree.getWidth() - insets.left - insets.right;
+        if (bounds != null) {
+            Insets insets = tree.getInsets();
+            // Expand the path bounds to cover the entire row. The main effect of this is that clicking outside of
+            // the node will still select the row.
+            bounds.x = insets.left;
+            bounds.width = tree.getWidth() - insets.left - insets.right;
+        }
         return bounds;
     }
 
