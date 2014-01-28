@@ -48,6 +48,11 @@ JPanel:
 
 * Panels are non-opaque by default, to fix appearance when placed inside JTabbedPane.
 
+JTabbedPane:
+
+* The selected/pressed tab is painted one extra pixel to the left, to match the native look better.
+* Known issue: The currently-pressed tab still lacks the line to the left.
+
 JScrollPane:
 
 * Scroll panes (and their contained viewports) are non-opaque by default, to fix appearance
