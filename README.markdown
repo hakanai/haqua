@@ -26,6 +26,10 @@ JComboBox:
 
 * Popup sets its JList background to match the popup itself.
 
+JPopupMenu:
+
+* Popup menus have the proper rounded corners.
+
 JTable:
 
 * Rows are painted with stripes.

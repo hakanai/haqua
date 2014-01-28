@@ -20,6 +20,7 @@ package org.trypticon.haqua;
 
 import com.apple.laf.AquaComboBoxUI;
 
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.ComboPopup;
@@ -44,4 +45,10 @@ public class HaquaComboBoxUI extends AquaComboBoxUI {
 
         return popup;
     }
+
+    // Returns the same thing as the similarly-named method in the superclass. We're just making it visible.
+    protected static boolean isPopDown(final JComboBox c) {
+        return AquaComboBoxUI.isPopdown(c);
+    }
+
 }

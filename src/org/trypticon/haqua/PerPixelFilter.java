@@ -19,8 +19,6 @@
 package org.trypticon.haqua;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.Raster;
-import java.awt.image.WritableRaster;
 
 /**
  * @author trejkaz
@@ -37,48 +35,13 @@ abstract class PerPixelFilter extends AbstractFilter {
         int height = source.getHeight();
 
         int[] pixels = new int[width * height];
-        getPixels(source, 0, 0, width, height, pixels);
+        Images.getPixels(source, 0, 0, width, height, pixels);
         manipulatePixels(pixels);
-        setPixels(destination, 0, 0, width, height, pixels);
+        Images.setPixels(destination, 0, 0, width, height, pixels);
         return destination;
     }
 
     protected abstract void manipulatePixels(int[] pixels);
 
-    private int[] getPixels(BufferedImage image, int x, int y, int w, int h, int[] pixels) {
-        if (w == 0 || h == 0) {
-            return new int[0];
-        }
-
-        if (pixels == null) {
-            pixels = new int[w * h];
-        } else if (pixels.length < w * h) {
-            throw new IllegalArgumentException("pixels array must have a length >= w * h");
-        }
-
-        int imageType = image.getType();
-        if (imageType == BufferedImage.TYPE_INT_ARGB || imageType == BufferedImage.TYPE_INT_RGB) {
-            Raster raster = image.getRaster();
-            return (int[]) raster.getDataElements(x, y, w, h, pixels);
-        }
-
-        return image.getRGB(x, y, w, h, pixels, 0, w);
-    }
-
-    private void setPixels(BufferedImage image, int x, int y, int w, int h, int[] pixels) {
-        if (pixels == null || w == 0 || h == 0) {
-            return;
-        } else if (pixels.length < w * h) {
-            throw new IllegalArgumentException("pixels array must have a length >= w * h");
-        }
-
-        int imageType = image.getType();
-        if (imageType == BufferedImage.TYPE_INT_ARGB || imageType == BufferedImage.TYPE_INT_RGB) {
-            WritableRaster raster = image.getRaster();
-            raster.setDataElements(x, y, w, h, pixels);
-        } else {
-            image.setRGB(x, y, w, h, pixels, 0, w);
-        }
-    }
 
 }
