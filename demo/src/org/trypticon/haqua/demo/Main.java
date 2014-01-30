@@ -36,9 +36,11 @@ public class Main {
             @Override
             public void run() {
                 JToggleButton activateButton = new JToggleButton("Activate Haqua");
-                JPanel toolBar = new JPanel(new FlowLayout());
+                JToolBar toolBar = new JToolBar();
                 final JFrame frame = new JFrame("Demo");
+                final JPanel opaqueWrapper = new ForcedOpaqueWrapper();
 
+                activateButton.putClientProperty("JButton.buttonType", "textured");
                 activateButton.addItemListener(new ItemListener() {
                     @Override
                     public void itemStateChanged(ItemEvent event) {
@@ -54,7 +56,6 @@ public class Main {
                         }
                     }
                 });
-                activateButton.setSelected(true);
 
                 Demo[] demos = { new TreeDemo(), new TableDemo(), new ComboBoxDemo(), new SegmentedButtonDemo(), new ButtonDemo(), new OtherButtonDemo() };
                 JTabbedPane tabbedPane = new JTabbedPane();
@@ -62,16 +63,40 @@ public class Main {
                     tabbedPane.addTab(demo.getName(), demo.createPanel());
                 }
 
-                //TODO: Get the unified look on this toolbar and the frame just to show we can do it.
+                toolBar.setFloatable(false);
                 toolBar.add(activateButton);
+
+                opaqueWrapper.setLayout(new BorderLayout());
+                opaqueWrapper.add(tabbedPane, BorderLayout.CENTER);
+
+                // Even though this says "brushed metal", it will use the modern unified style these days.
+                frame.getRootPane().putClientProperty("apple.awt.brushMetalLook", true);
 
                 frame.setLayout(new BorderLayout());
                 frame.add(toolBar, BorderLayout.PAGE_START);
-                frame.add(tabbedPane, BorderLayout.CENTER);
+                frame.add(opaqueWrapper, BorderLayout.CENTER);
                 frame.pack();
                 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 frame.setVisible(true);
+
+                activateButton.setSelected(true);
             }
         });
+    }
+
+    private static class ForcedOpaqueWrapper extends JPanel {
+        private ForcedOpaqueWrapper() {
+            setOpaque(true);
+        }
+
+        @Override
+        public void updateUI() {
+            setBackground(null);
+
+            super.updateUI();
+
+            // Deliberately remove the alpha.
+            setBackground(new Color(getBackground().getRGB() & 0xFFFFFF));
+        }
     }
 }
