@@ -63,7 +63,11 @@ JTree:
 
 JPanel:
 
-* Panels are non-opaque by default, to fix appearance when placed inside JTabbedPane.
+* Panels are non-opaque by default, to fix appearance when placed inside JTabbedPane (if
+  the window has apple.awt.brushMetalLook set to true, Aqua will paint the tabbed pane
+  in the background colour for the window as if it's cutting through the component hierarchy.
+  If it is not set, Aqua will paint the panel inside the tabbed pane as if it is opaque,
+  resulting in it being slightly lighter than it should be.)
 
 JToolBar:
 
