@@ -65,6 +65,11 @@ JPanel:
 
 * Panels are non-opaque by default, to fix appearance when placed inside JTabbedPane.
 
+JToolBar:
+
+* Dragging the toolbar background drags the window if apple.awt.brushMetalLook is set to
+  true on its root pane.
+
 JTabbedPane:
 
 * The selected/pressed tab is painted one extra pixel to the left, to match the native look better.
