@@ -43,8 +43,9 @@ public class HaquaTabbedPaneUI extends AquaTabbedPaneContrastUI {
 
     @Override
     protected void paintCUITab(Graphics g, int tabPlacement, Rectangle tabRect, boolean isSelected, boolean frameActive, boolean isLeftToRight, int nonRectIndex) {
+        // Don't extend the leftmost tab. It should remain the same size.
         //TODO: Pressed tab still lacks the solid line to the left.
-        if (isSelected || isPressedAt(nonRectIndex)) {
+        if ((isSelected || isPressedAt(nonRectIndex)) && nonRectIndex > 0) {
 
             Rectangle tabRectFixed = new Rectangle(tabRect);
             tabRectFixed.x--;
