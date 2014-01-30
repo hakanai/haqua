@@ -22,7 +22,6 @@ import com.apple.laf.AquaLookAndFeel;
 
 import javax.swing.LayoutStyle;
 import javax.swing.UIDefaults;
-import javax.swing.UIManager;
 import javax.swing.plaf.ColorUIResource;
 
 /**
@@ -52,6 +51,7 @@ public class HaquaLookAndFeel extends AquaLookAndFeel {
     protected void initClassDefaults(UIDefaults defaults) {
         super.initClassDefaults(defaults);
 
+        defaults.put("ButtonUI", "org.trypticon.haqua.HaquaButtonUI");
         defaults.put("TextFieldUI", "org.trypticon.haqua.HaquaTextFieldUI");
         defaults.put("ComboBoxUI", "org.trypticon.haqua.HaquaComboBoxUI");
         defaults.put("TableUI", "org.trypticon.haqua.HaquaTableUI");
@@ -67,7 +67,7 @@ public class HaquaLookAndFeel extends AquaLookAndFeel {
     protected void initComponentDefaults(UIDefaults defaults) {
         super.initComponentDefaults(defaults);
 
-        final Object controlSmallFont = UIManager.get("IconButton.font");
+        final Object controlSmallFont = defaults.get("IconButton.font");
 
         // Default titled border is the etched line style, but this one looks more native.
         defaults.put("TitledBorder.border", defaults.get("TitledBorder.aquaVariant"));

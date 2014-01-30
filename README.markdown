@@ -34,6 +34,10 @@ JTabbedPane:
 Hacks in use
 ------------
 
+JButton:
+
+* When switching look and feel at runtime, segmented buttons no longer lose their borders.
+
 JComboBox:
 
 * Popup sets its JList background to match the popup itself.
