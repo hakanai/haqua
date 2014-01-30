@@ -19,12 +19,25 @@ Usage is the same as any other custom look and feel:
     }
 
 
+Known bugs which I haven't found a way to fix yet
+-------------------------------------------------
+
+JComboBox:
+
+* The border doesn't paint correctly over the text field of an editable combo box.
+
+JTabbedPane:
+
+* The currently-pressed tab still lacks the line to the left.
+
+
 Hacks in use
 ------------
 
 JComboBox:
 
 * Popup sets its JList background to match the popup itself.
+* Text field on editable combo boxes lines up properly with the button.
 
 JPopupMenu:
 
@@ -51,7 +64,6 @@ JPanel:
 JTabbedPane:
 
 * The selected/pressed tab is painted one extra pixel to the left, to match the native look better.
-* Known issue: The currently-pressed tab still lacks the line to the left.
 
 JScrollPane:
 

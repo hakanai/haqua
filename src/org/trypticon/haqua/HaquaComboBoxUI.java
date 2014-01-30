@@ -23,8 +23,12 @@ import com.apple.laf.AquaComboBoxUI;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.ComboPopup;
 import java.awt.Component;
+import java.awt.Container;
+import java.awt.LayoutManager;
+import java.awt.Rectangle;
 
 /**
  * @author trejkaz
@@ -46,9 +50,33 @@ public class HaquaComboBoxUI extends AquaComboBoxUI {
         return popup;
     }
 
+    @Override
+    protected LayoutManager createLayoutManager() {
+        return new HaquaComboBoxLayoutManager(super.createLayoutManager());
+    }
+
     // Returns the same thing as the similarly-named method in the superclass. We're just making it visible.
     protected static boolean isPopDown(final JComboBox c) {
         return AquaComboBoxUI.isPopdown(c);
     }
 
+    private class HaquaComboBoxLayoutManager extends BasicComboBoxUI.ComboBoxLayoutManager {
+        private final LayoutManager delegate;
+
+        private HaquaComboBoxLayoutManager(LayoutManager delegate) {
+            this.delegate = delegate;
+        }
+
+        @Override
+        public void layoutContainer(final Container parent) {
+            delegate.layoutContainer(parent);
+
+            if (arrowButton != null && comboBox.isEditable()) {
+                // Arrow button is one pixel too far to the left for editable combo boxes.
+                Rectangle bounds = arrowButton.getBounds();
+                bounds.x += 1;
+                arrowButton.setBounds(bounds);
+            }
+        }
+    }
 }
