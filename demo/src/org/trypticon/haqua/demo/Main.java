@@ -38,7 +38,7 @@ public class Main {
                 JToggleButton activateButton = new JToggleButton("Activate Haqua");
                 JToolBar toolBar = new JToolBar();
                 final JFrame frame = new JFrame("Demo");
-                final JPanel opaqueWrapper = new ForcedOpaqueWrapper();
+                final Container opaqueWrapper = new ForcedOpaqueWrapper();
 
                 activateButton.putClientProperty("JButton.buttonType", "textured");
                 activateButton.addItemListener(new ItemListener() {
@@ -95,8 +95,8 @@ public class Main {
 
             super.updateUI();
 
-            // Deliberately remove the alpha.
-            setBackground(new Color(getBackground().getRGB() & 0xFFFFFF));
+            // Deliberately sets the alpha to opaque by not using the (int, boolean) version of the method.
+            setBackground(new Color(getBackground().getRGB()));
         }
     }
 }
