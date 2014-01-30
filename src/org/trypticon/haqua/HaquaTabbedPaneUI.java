@@ -92,10 +92,12 @@ public class HaquaTabbedPaneUI extends AquaTabbedPaneContrastUI {
         private void repaintTabArea() {
             // Repaint the whole width of the tab area. The superclass implementation is not repainting enough,
             // resulting in some of the UI not repainting when it should.
-            Rectangle bounds = getTabBounds(tabPane, tabPane.getSelectedIndex());
-            bounds.x = 0;
-            bounds.width = tabPane.getWidth();
-            tabPane.repaint(bounds);
+            if (tabPane != null) {
+                Rectangle bounds = getTabBounds(tabPane, tabPane.getSelectedIndex());
+                bounds.x = 0;
+                bounds.width = tabPane.getWidth();
+                tabPane.repaint(bounds);
+            }
         }
     }
 }
