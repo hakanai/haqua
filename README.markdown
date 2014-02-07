@@ -22,6 +22,11 @@ Usage is the same as any other custom look and feel:
 Known bugs which I haven't found a way to fix yet
 -------------------------------------------------
 
+LayoutStyle:
+
+* Despite the layout style correctly compensating for the visual margin of buttons,
+  buttons still layout correctly when aligned to the edge of any other kind of component.
+
 JComboBox:
 
 * The border doesn't paint correctly over the text field of an editable combo box.
