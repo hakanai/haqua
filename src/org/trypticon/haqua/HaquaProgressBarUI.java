@@ -42,6 +42,15 @@ public class HaquaProgressBarUI extends AquaProgressBarUI {
     }
 
     @Override
+    public void installUI(JComponent c) {
+        super.installUI(c);
+
+        if (progressBar.isIndeterminate()) {
+            startAnimationTimer();
+        }
+    }
+
+    @Override
     public int getBaseline(JComponent c, int width, int height) {
         // Same as BasicProgressBarUI. AquaProgressBarUI doesn't override at all, making components not line up.
         super.getBaseline(c, width, height);
