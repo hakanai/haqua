@@ -48,6 +48,12 @@ JComboBox:
 * Popup sets its JList background to match the popup itself.
 * Text field on editable combo boxes lines up properly with the button.
 
+JProgressBar:
+
+* Text is drawn at the right location vertically.
+* Baseline is correctly returned so that the progress bar will line up with other components
+  in the same row.
+
 JPopupMenu:
 
 * Popup menus have the proper rounded corners.
