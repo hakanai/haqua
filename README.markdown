@@ -53,7 +53,8 @@ JProgressBar:
 * Text is drawn at the right location vertically.
 * Baseline is correctly returned so that the progress bar will line up with other components
   in the same row.
-* Indeterminate progress bars properly animate when switching look and feel.
+* Indeterminate progress bars properly animate when UI is installed.
+* Circular progress bars properly display as circular when UI is installed.
 
 JPopupMenu:
 

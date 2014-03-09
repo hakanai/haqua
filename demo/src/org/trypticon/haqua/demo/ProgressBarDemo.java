@@ -37,7 +37,7 @@ public class ProgressBarDemo implements Demo {
     public JPanel createPanel() {
         String[] sizeVariants = { null, "small", "mini" };
 
-        JComponent[][] grid = new JComponent[2][sizeVariants.length + 1];
+        JComponent[][] grid = new JComponent[4][sizeVariants.length + 1];
 
         grid[0] = new JComponent[] {
                 null,
@@ -47,15 +47,31 @@ public class ProgressBarDemo implements Demo {
         };
 
         grid[1][0] = new JLabel("Normal");
+        grid[2][0] = new JLabel("Indeterminate");
+        grid[3][0] = new JLabel("Circular");
 
-        for (int i = 0; i < sizeVariants.length; i++)
-        {
+        for (int i = 0; i < sizeVariants.length; i++) {
             String sizeVariant = sizeVariants[i];
 
             JProgressBar normalProgressBar = new JProgressBar(new DefaultBoundedRangeModel(42, 0, 0, 100));
             normalProgressBar.setStringPainted(true);
             normalProgressBar.putClientProperty("JComponent.sizeVariant", sizeVariant);
             grid[1][i + 1] = normalProgressBar;
+
+            JProgressBar indeterminateProgressBar = new JProgressBar();
+            indeterminateProgressBar.setIndeterminate(true);
+            indeterminateProgressBar.setString("Reticulating splines");
+            indeterminateProgressBar.setStringPainted(true);
+            indeterminateProgressBar.putClientProperty("JComponent.sizeVariant", sizeVariant);
+            grid[2][i + 1] = indeterminateProgressBar;
+
+            if (i == 0) { // no variants for this one.
+                JProgressBar circularProgressBar = new JProgressBar();
+                circularProgressBar.setIndeterminate(true);
+                circularProgressBar.putClientProperty("JProgressBar.style", "circular");
+                circularProgressBar.putClientProperty("JComponent.sizeVariant", sizeVariant);
+                grid[3][i + 1] = circularProgressBar;
+            }
         }
 
         return ContainerUtils.createGridPanel(grid);

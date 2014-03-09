@@ -45,8 +45,15 @@ public class HaquaProgressBarUI extends AquaProgressBarUI {
     public void installUI(JComponent c) {
         super.installUI(c);
 
+        // AquaProgressBarUI only starts the animation timer if the state changes *after* installation.
         if (progressBar.isIndeterminate()) {
             startAnimationTimer();
+        }
+
+        // AquaProgressBarUI only notices it's circular if you change the state *after* installation.
+        Object style = progressBar.getClientProperty("JProgressBar.style");
+        if (style != null) {
+            isCircular = "circular".equalsIgnoreCase(String.valueOf(style));
         }
     }
 
