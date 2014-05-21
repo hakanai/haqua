@@ -29,11 +29,14 @@ import javax.swing.JWindow;
 import javax.swing.Popup;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.ComponentUI;
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -58,38 +61,62 @@ public class HaquaPopupMenuUI extends AquaPopupMenuUI {
     public Popup getPopup(JPopupMenu popupMenu, int x, int y) {
         Popup popup = super.getPopup(popupMenu, x, y);
 
+        Component invoker = popupMenu.getInvoker();
+        if (invoker instanceof JComboBox && HaquaComboBoxUI.isPopDown((JComboBox) invoker)) {
+            // Pop-down from a combo box is supposed to be square, which already works.
+            return popup;
+        }
+
         // I tried making my own popup window class, but when I clicked on the popup menu,
         // it didn't seem to receive the mouse event.
         // So we're using this one which the superclass will give us, presumably already configured correctly.
         // We know it will always be heavyweight under Aqua, so this should be OK.
-        JWindow popupWindow = (JWindow) SwingUtilities.getWindowAncestor(popupMenu);
+        final JWindow popupWindow = (JWindow) SwingUtilities.getWindowAncestor(popupMenu);
 
-        Component invoker = popupMenu.getInvoker();
-        if (invoker instanceof JComboBox && HaquaComboBoxUI.isPopDown((JComboBox) invoker)) {
-
-            // Pop-down from a combo box is supposed to be square, which already works. But we have to
-            // reset the contents of the window for some reason.
-            popupWindow.setBackground(UIManager.getColor("PopupMenu.background"));
-            JPanel panel = new JPanel(new BorderLayout());
-            panel.add(popupMenu);
-            popupWindow.setContentPane(panel);
-
-        } else {
-
-            // setOpaque(true) and setShape() gives you an opaque square with rounded black corners.
-            // setOpaque(false) and setShape() gives you rounded corners but no drop shadow.
-            // setBackground() by itself removes the borders which should be painted.
-            // Until that is fixed, we paint the window border and drop shadow ourselves.
-
-            popupWindow.setBackground(new Color(0, 0, 0, 0));
-
-            popupWindow.setContentPane(new DropShadowPanel(popupMenu));
-
-            Point location = popupWindow.getLocation();
-            location.x -= DropShadowPanel.LEFT_MARGIN;
-            location.y -= DropShadowPanel.TOP_MARGIN;
-            popupWindow.setLocation(location);
+        if (!(invoker instanceof JComboBox)) {
+            // When the invoker is a combo box, the menu uses a transparent panel. When it's any
+            // other kind of popup menu, it is set to opaque, which messes up the rounded corners.
+            popupMenu.setBackground(new Color(0, 0, 0, 0));
+            popupMenu.setOpaque(false);
         }
+
+        // setOpaque(true) and setShape() gives you an opaque square with rounded black corners.
+        // setOpaque(false) and setShape() gives you rounded corners but no drop shadow.
+        // setBackground() by itself removes the borders which should be painted.
+        // Until that is fixed, we paint the window border and drop shadow ourselves.
+
+        final Color originalBackground = popupWindow.getBackground();
+        final Container originalContentPane = popupWindow.getContentPane();
+
+        popupWindow.setBackground(new Color(0, 0, 0, 0));
+        popupWindow.setContentPane(new DropShadowPanel(popupMenu));
+
+        // Restore the window to its original state once it's hidden, because the PopupFactory
+        // will cache the instance and things like tooltips will be messed up.
+        // Using PopupMenuListener for this seems to be the most reliable. Using WindowListener
+        // somehow results in getting the event after the next popup menu is being displayed,
+        // which messes up the next component to reuse the menu.
+        popupMenu.addPopupMenuListener(new PopupMenuListener() {
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent event) {
+            }
+
+            @Override
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent event) {
+                popupWindow.setBackground(originalBackground);
+                popupWindow.setContentPane(originalContentPane);
+                ((JPopupMenu) event.getSource()).removePopupMenuListener(this);
+            }
+
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent event) {
+            }
+        });
+
+        Point location = popupWindow.getLocation();
+        location.x -= DropShadowPanel.LEFT_MARGIN;
+        location.y -= DropShadowPanel.TOP_MARGIN;
+        popupWindow.setLocation(location);
 
         return popup;
     }
@@ -109,6 +136,8 @@ public class HaquaPopupMenuUI extends AquaPopupMenuUI {
 
         private DropShadowPanel(JPopupMenu popupMenu) {
             this.popupMenu = popupMenu;
+
+            setBackground(new Color(0, 0, 0, 0));
 
             // Positioning the wrapped component completely inside the boundaries, so that it can't interfere
             // with the border we will be drawing.
@@ -149,6 +178,9 @@ public class HaquaPopupMenuUI extends AquaPopupMenuUI {
                 // Outline of the round rect
                 wrapImageGraphics.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
                 wrapImageGraphics.setPaint(new Color(0, 0, 0, 64));
+                wrapImageGraphics.setComposite(AlphaComposite.Clear);
+                wrapImageGraphics.draw(shape);
+                wrapImageGraphics.setComposite(AlphaComposite.SrcOver);
                 wrapImageGraphics.draw(shape);
             } finally {
                 wrapImageGraphics.dispose();

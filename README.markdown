@@ -22,6 +22,11 @@ Usage is the same as any other custom look and feel:
 Known bugs which I haven't found a way to fix yet
 -------------------------------------------------
 
+LayoutStyle:
+
+* Despite the layout style correctly compensating for the visual margin of buttons,
+  buttons still layout correctly when aligned to the edge of any other kind of component.
+
 JComboBox:
 
 * The border doesn't paint correctly over the text field of an editable combo box.
@@ -42,6 +47,14 @@ JComboBox:
 
 * Popup sets its JList background to match the popup itself.
 * Text field on editable combo boxes lines up properly with the button.
+
+JProgressBar:
+
+* Text is drawn at the right location vertically.
+* Baseline is correctly returned so that the progress bar will line up with other components
+  in the same row.
+* Indeterminate progress bars properly animate when UI is installed.
+* Circular progress bars properly display as circular when UI is installed.
 
 JPopupMenu:
 

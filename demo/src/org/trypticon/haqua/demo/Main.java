@@ -57,7 +57,11 @@ public class Main {
                     }
                 });
 
-                Demo[] demos = { new TreeDemo(), new TableDemo(), new ComboBoxDemo(), new SegmentedButtonDemo(), new ButtonDemo(), new OtherButtonDemo() };
+                Demo[] demos = {
+                        new TreeDemo(), new TableDemo(),
+                        new ComboBoxDemo(), new PopupMenuDemo(),new ProgressBarDemo(),
+                        new SegmentedButtonDemo(), new ButtonDemo(), new OtherButtonDemo()
+                };
                 JTabbedPane tabbedPane = new JTabbedPane();
                 for (Demo demo : demos) {
                     tabbedPane.addTab(demo.getName(), demo.createPanel());
