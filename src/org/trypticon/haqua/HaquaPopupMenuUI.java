@@ -32,6 +32,7 @@ import javax.swing.UIManager;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.ComponentUI;
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
@@ -177,6 +178,9 @@ public class HaquaPopupMenuUI extends AquaPopupMenuUI {
                 // Outline of the round rect
                 wrapImageGraphics.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
                 wrapImageGraphics.setPaint(new Color(0, 0, 0, 64));
+                wrapImageGraphics.setComposite(AlphaComposite.Clear);
+                wrapImageGraphics.draw(shape);
+                wrapImageGraphics.setComposite(AlphaComposite.SrcOver);
                 wrapImageGraphics.draw(shape);
             } finally {
                 wrapImageGraphics.dispose();
