@@ -21,15 +21,14 @@ package org.trypticon.haqua;
 import com.apple.laf.AquaTableUI;
 
 import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.UIResource;
 import javax.swing.table.TableColumnModel;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Window;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -54,6 +53,23 @@ public class HaquaTableUI extends AquaTableUI {
 
         // Tell Swing to fill the whole viewport so that we can fill in the stripes all the way down.
         table.setFillsViewportHeight(UIManager.getBoolean("Table.fillsViewportHeight"));
+
+        // Use magically switching colours to solve the issue of painting the wrong selection colour when
+        // the window is not active.
+        Color selectionForeground = table.getSelectionForeground();
+        if (selectionForeground == null || selectionForeground instanceof UIResource) {
+            table.setSelectionForeground(new InactivatableColor(
+                    table,
+                    UIManager.getColor("Table.selectionForeground"),
+                    UIManager.getColor("Table.selectionInactiveForeground")));
+        }
+        Color selectionBackground = table.getSelectionBackground();
+        if (selectionBackground == null || selectionBackground instanceof UIResource) {
+            table.setSelectionBackground(new InactivatableColor(
+                    table,
+                    UIManager.getColor("Table.selectionBackground"),
+                    UIManager.getColor("Table.selectionInactiveBackground")));
+        }
     }
 
     @Override
@@ -105,22 +121,7 @@ public class HaquaTableUI extends AquaTableUI {
             }
         }
 
-        boolean oldIgnoreRepaint = table.getIgnoreRepaint();
-        Color oldSelectionForeground = table.getSelectionForeground();
-        Color oldSelectionBackground = table.getSelectionBackground();
-        try {
-            table.setIgnoreRepaint(true);
-            Window ancestor = SwingUtilities.getWindowAncestor(table);
-            if (ancestor == null || !ancestor.isFocused()) {
-                table.setSelectionForeground(UIManager.getColor("Table.selectionInactiveForeground"));
-                table.setSelectionBackground(UIManager.getColor("Table.selectionInactiveBackground"));
-            }
-            super.paint(g, c);
-        } finally {
-            table.setSelectionForeground(oldSelectionForeground);
-            table.setSelectionBackground(oldSelectionBackground);
-            table.setIgnoreRepaint(oldIgnoreRepaint);
-        }
+        super.paint(g, c);
     }
 
     private static class Handler implements PropertyChangeListener {
