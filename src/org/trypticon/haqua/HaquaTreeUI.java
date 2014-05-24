@@ -120,7 +120,7 @@ public class HaquaTreeUI extends AquaTreeUI {
             g.fillRect(clipBounds.x, bounds.y, clipBounds.width, bounds.height);
         }
 
-        // This was already been called by DefaultTreeUI, but before calling paintRow(), so we just painted over it.
+        // This was already called by DefaultTreeUI, but before calling paintRow(), so we just painted over it.
         // I guess ask the Swing developers what they were smoking when they decided to paint them that way around.
         paintExpandControl(g, clipBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf);
 
@@ -139,10 +139,9 @@ public class HaquaTreeUI extends AquaTreeUI {
         Rectangle bounds = super.getPathBounds(tree, path);
         if (bounds != null) {
             Insets insets = tree.getInsets();
-            // Expand the path bounds to cover the entire row. The main effect of this is that clicking outside of
-            // the node will still select the row.
-            bounds.x = insets.left;
-            bounds.width = tree.getWidth() - insets.left - insets.right;
+            // Expand the path bounds to cover everything to the right of the label.
+            // The main effect of this is that clicking to the right will still select the row.
+            bounds.width = tree.getWidth() - bounds.x - insets.right;
         }
         return bounds;
     }
