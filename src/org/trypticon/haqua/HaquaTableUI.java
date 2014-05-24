@@ -106,15 +106,18 @@ public class HaquaTableUI extends AquaTableUI {
         }
 
         boolean oldIgnoreRepaint = table.getIgnoreRepaint();
+        Color oldSelectionForeground = table.getSelectionForeground();
         Color oldSelectionBackground = table.getSelectionBackground();
         try {
             table.setIgnoreRepaint(true);
             Window ancestor = SwingUtilities.getWindowAncestor(table);
             if (ancestor == null || !ancestor.isFocused()) {
+                table.setSelectionForeground(UIManager.getColor("Table.selectionInactiveForeground"));
                 table.setSelectionBackground(UIManager.getColor("Table.selectionInactiveBackground"));
             }
             super.paint(g, c);
         } finally {
+            table.setSelectionForeground(oldSelectionForeground);
             table.setSelectionBackground(oldSelectionBackground);
             table.setIgnoreRepaint(oldIgnoreRepaint);
         }
