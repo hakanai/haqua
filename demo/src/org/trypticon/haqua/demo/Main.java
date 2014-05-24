@@ -58,7 +58,7 @@ public class Main {
                 });
 
                 Demo[] demos = {
-                        new TreeDemo(), new TableDemo(),
+                        new TreeDemo(), new TableDemo(), new TreeTableDemo(),
                         new ComboBoxDemo(), new PopupMenuDemo(),new ProgressBarDemo(),
                         new SegmentedButtonDemo(), new ButtonDemo(), new OtherButtonDemo()
                 };
