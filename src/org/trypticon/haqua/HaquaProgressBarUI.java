@@ -22,6 +22,7 @@ import com.apple.laf.AquaProgressBarUI;
 
 import javax.swing.JComponent;
 import javax.swing.JProgressBar;
+import javax.swing.event.AncestorEvent;
 import javax.swing.plaf.ComponentUI;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -45,15 +46,20 @@ public class HaquaProgressBarUI extends AquaProgressBarUI {
     public void installUI(JComponent c) {
         super.installUI(c);
 
-        // AquaProgressBarUI only starts the animation timer if the state changes *after* installation.
-        if (progressBar.isIndeterminate()) {
-            startAnimationTimer();
-        }
-
         // AquaProgressBarUI only notices it's circular if you change the state *after* installation.
         Object style = progressBar.getClientProperty("JProgressBar.style");
         if (style != null) {
             isCircular = "circular".equalsIgnoreCase(String.valueOf(style));
+        }
+    }
+
+    @Override
+    public void ancestorAdded(AncestorEvent e) {
+        super.ancestorAdded(e);
+
+        // AquaProgressBarUI only starts the animation timer if the state changes *after* installation.
+        if (progressBar.isIndeterminate()) {
+            startAnimationTimer();
         }
     }
 
