@@ -65,6 +65,7 @@ JTable:
 * Rows are painted with stripes.
 * Row and column spacing is set to 0 to eliminate the seams you would usually see.
 * Table paints the background all the way to the bottom of the viewport it's placed inside.
+* Table paints the selected rows in the proper colour when the window is inactive.
 
 JTree:
 

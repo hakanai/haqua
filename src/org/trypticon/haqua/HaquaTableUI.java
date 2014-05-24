@@ -21,6 +21,7 @@ package org.trypticon.haqua;
 import com.apple.laf.AquaTableUI;
 
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.table.TableColumnModel;
@@ -28,6 +29,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Window;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -103,7 +105,19 @@ public class HaquaTableUI extends AquaTableUI {
             }
         }
 
-        super.paint(g, c);
+        boolean oldIgnoreRepaint = table.getIgnoreRepaint();
+        Color oldSelectionBackground = table.getSelectionBackground();
+        try {
+            table.setIgnoreRepaint(true);
+            Window ancestor = SwingUtilities.getWindowAncestor(table);
+            if (ancestor == null || !ancestor.isFocused()) {
+                table.setSelectionBackground(UIManager.getColor("Table.selectionInactiveBackground"));
+            }
+            super.paint(g, c);
+        } finally {
+            table.setSelectionBackground(oldSelectionBackground);
+            table.setIgnoreRepaint(oldIgnoreRepaint);
+        }
     }
 
     private static class Handler implements PropertyChangeListener {
