@@ -19,7 +19,6 @@
 package org.trypticon.haqua;
 
 import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
 import javax.swing.plaf.UIResource;
 import java.awt.Color;
 
@@ -42,7 +41,7 @@ public class InactivatableColor extends Color implements UIResource {
 
     @Override
     public int getRGB() {
-        if (SwingUtilities.getWindowAncestor(component).isFocused()) {
+        if (FocusUtils.isInActiveWindow(component)) {
             return activeColor.getRGB();
         } else {
             return inactiveColor.getRGB();
