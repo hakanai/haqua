@@ -26,6 +26,7 @@ LayoutStyle:
 
 * Despite the layout style correctly compensating for the visual margin of buttons,
   buttons still layout incorrectly when aligned to the edge of any other kind of component.
+  (LayoutStyleAlignmentTest)
 
 JComboBox:
 
