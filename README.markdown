@@ -25,15 +25,21 @@ Known bugs which I haven't found a way to fix yet
 LayoutStyle:
 
 * Despite the layout style correctly compensating for the visual margin of buttons,
-  buttons still layout correctly when aligned to the edge of any other kind of component.
+  buttons still layout incorrectly when aligned to the edge of any other kind of component.
 
 JComboBox:
 
-* The border doesn't paint correctly over the text field of an editable combo box.
+* The border doesn't paint correctly over the text field of an editable combo box
+  (it should surround the whole field, but only surrounds the combo box button.)
 
 JTabbedPane:
 
 * The currently-pressed tab still lacks the line to the left.
+
+JMenuBar:
+
+* The Help menu only acts like a proper help menu if the text on it is "Help" (which
+  is of course only the case in English.) (JI-9012514)
 
 
 Hacks in use
