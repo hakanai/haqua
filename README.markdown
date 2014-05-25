@@ -49,6 +49,8 @@ JMenuBar:
 Hacks in use
 ------------
 
+(Note: the tests in parentheses demonstrate the issue, _not_ the fix.)
+
 JButton:
 
 * When switching look and feel at runtime, segmented buttons no longer lose their borders.
