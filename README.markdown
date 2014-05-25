@@ -39,7 +39,7 @@ JTabbedPane:
 JMenuBar:
 
 * The Help menu only acts like a proper help menu if the text on it is "Help" (which
-  is of course only the case in English.) (JI-9012514)
+  is of course only the case in English.) (HelpMenuTest, JI-9012514)
 
 
 Hacks in use
@@ -58,7 +58,7 @@ JProgressBar:
 
 * Text is drawn at the right location vertically.
 * Baseline is correctly returned so that the progress bar will line up with other components
-  in the same row.
+  in the same row. (ProgressBarBaselineTest)
 * Indeterminate progress bars properly animate when UI is installed.
 * Circular progress bars properly display as circular when UI is installed.
 
