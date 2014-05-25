@@ -64,7 +64,7 @@ JProgressBar:
 
 JPopupMenu:
 
-* Popup menus have the proper rounded corners.
+* Popup menus have the proper rounded corners. (PopupMenuRoundedCornersTest)
 
 JTable:
 

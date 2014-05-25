@@ -20,10 +20,15 @@ package org.trypticon.haqua.demo.problems;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.LayoutManager;
 
 public class ProgressBarBaselineTest implements Runnable {
     public static void main(String[] args) {
@@ -38,14 +43,37 @@ public class ProgressBarBaselineTest implements Runnable {
         progressBar.setString("Progress Bar");
         progressBar.setStringPainted(true);
 
-        JFrame frame = new JFrame();
         FlowLayout layout = new FlowLayout(FlowLayout.LEADING);
         layout.setAlignOnBaseline(true);
+        BaselinePaintingPanel panel = new BaselinePaintingPanel(layout);
+        panel.add(label);
+        panel.add(progressBar);
+
+        JFrame frame = new JFrame();
+        frame.setContentPane(panel);
         frame.setLayout(layout);
-        frame.add(label);
-        frame.add(progressBar);
         frame.pack();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
+    }
+
+    private static class BaselinePaintingPanel extends JPanel {
+        public BaselinePaintingPanel(LayoutManager layout) {
+            super(layout);
+        }
+
+        @Override
+        public void paint(Graphics g) {
+            super.paint(g);
+
+            g.setColor(Color.RED);
+            for (Component component : getComponents()) {
+                int x = component.getX();
+                int y = component.getY();
+                int width = component.getWidth();
+                int baseline = component.getBaseline(width, component.getHeight());
+                g.drawLine(x, y + baseline, x + width, y + baseline);
+            }
+        }
     }
 }
