@@ -31,10 +31,12 @@ JComboBox:
 
 * The border doesn't paint correctly over the text field of an editable combo box
   (it should surround the whole field, but only surrounds the combo box button.)
+  (ComboBoxPaintingTest)
 
 JTabbedPane:
 
 * The currently-pressed tab still lacks the line to the left.
+  (TabbedPanePaintingTest)
 
 JMenuBar:
 
@@ -54,6 +56,7 @@ JComboBox:
 
 * Popup sets its JList background to match the popup itself.
 * Text field on editable combo boxes lines up properly with the button.
+  (ComboBoxPaintingTest)
 
 JProgressBar:
 
