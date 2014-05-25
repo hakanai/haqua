@@ -51,7 +51,6 @@ public class ProgressBarBaselineTest implements Runnable {
 
         JFrame frame = new JFrame();
         frame.setContentPane(panel);
-        frame.setLayout(layout);
         frame.pack();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
