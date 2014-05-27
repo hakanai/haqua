@@ -19,6 +19,7 @@
 package org.trypticon.haqua;
 
 import com.apple.laf.AquaTextFieldUI;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -46,8 +47,12 @@ public class HaquaTextFieldUI extends AquaTextFieldUI {
     }
 
     @Override
+    @Nullable
     protected Rectangle getVisibleEditorRect() {
         Rectangle rectangle = super.getVisibleEditorRect();
+        if (rectangle == null) {
+            return null;
+        }
         if (getComponent().getParent() instanceof JComboBox) {
             // Correct the text position down one line to make up for shrinking the height.
             rectangle.y++;

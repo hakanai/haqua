@@ -22,6 +22,9 @@
     <target name="compile">
         <mkdir dir="build/classes"/>
         <javac srcdir="src" destdir="build/classes" debug="true">
+            <classpath>
+                <pathelement location="lib/annotations.jar"/>
+            </classpath>
             <!-- Symbol file omits pretty much every class we extend from. -->
             <compilerarg value="-XDignore.symbol.file"/>
         </javac>
