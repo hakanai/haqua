@@ -24,6 +24,8 @@ import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
 import org.jdesktop.swingx.treetable.DefaultTreeTableModel;
 import org.jdesktop.swingx.treetable.TreeTableModel;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -36,11 +38,13 @@ import java.util.Arrays;
  * @author trejkaz
  */
 public class TreeTableDemo implements Demo {
+    @NotNull
     @Override
     public String getName() {
         return "Tree Tables";
     }
 
+    @NotNull
     @Override
     public JPanel createPanel() {
         JPanel panel = new JPanel(new BorderLayout());
@@ -54,6 +58,7 @@ public class TreeTableDemo implements Demo {
     }
 
     private static class BetterTreeTable extends JXTreeTable {
+        @Nullable
         private Highlighter oddRowHighlighter;
 
         public BetterTreeTable(TreeTableModel treeModel) {
@@ -105,6 +110,7 @@ public class TreeTableDemo implements Demo {
     }
 
     private static class DummyTreeTableModel extends DefaultTreeTableModel {
+        @NotNull
         private static DefaultMutableTreeTableNode rootNode = new DefaultMutableTreeTableNode();
         static {
             DefaultMutableTreeTableNode blue = new DefaultMutableTreeTableNode("Blue");
@@ -158,6 +164,7 @@ public class TreeTableDemo implements Demo {
             super(rootNode, Arrays.asList(columnNames));
         }
 
+        @NotNull
         @Override
         public Class<?> getColumnClass(int columnIndex) {
             if (columnIndex == 0) {

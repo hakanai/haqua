@@ -18,6 +18,8 @@
 
 package org.trypticon.haqua.demo;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -29,6 +31,7 @@ import javax.swing.JToggleButton;
  * @author trejkaz
  */
 public class ButtonDemo implements Demo {
+    @NotNull
     @Override
     public String getName() {
         return "Buttons";

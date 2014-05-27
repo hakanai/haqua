@@ -18,6 +18,8 @@
 
 package org.trypticon.haqua.demo;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -29,11 +31,13 @@ import java.awt.BorderLayout;
  * @author trejkaz
  */
 public class TableDemo implements Demo {
+    @NotNull
     @Override
     public String getName() {
         return "Tables";
     }
 
+    @NotNull
     @Override
     public JPanel createPanel() {
         JPanel panel = new JPanel(new BorderLayout());
@@ -80,6 +84,7 @@ public class TableDemo implements Demo {
             super(rowData, columnNames);
         }
 
+        @NotNull
         @Override
         public Class<?> getColumnClass(int columnIndex) {
             if (columnIndex == 0) {

@@ -18,6 +18,8 @@
 
 package org.trypticon.haqua.demo;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
@@ -43,7 +45,7 @@ public class Main {
                 activateButton.putClientProperty("JButton.buttonType", "textured");
                 activateButton.addItemListener(new ItemListener() {
                     @Override
-                    public void itemStateChanged(ItemEvent event) {
+                    public void itemStateChanged(@NotNull ItemEvent event) {
                         try {
                             if (event.getStateChange() == ItemEvent.SELECTED) {
                                 UIManager.setLookAndFeel("org.trypticon.haqua.HaquaLookAndFeel");

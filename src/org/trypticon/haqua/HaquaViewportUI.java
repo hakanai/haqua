@@ -18,6 +18,8 @@
 
 package org.trypticon.haqua;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.JComponent;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
@@ -27,13 +29,14 @@ import javax.swing.plaf.basic.BasicViewportUI;
  * @author trejkaz
  */
 public class HaquaViewportUI extends BasicViewportUI {
+    @NotNull
     @SuppressWarnings("UnusedDeclaration") // called via reflection
     public static ComponentUI createUI(JComponent component) {
         return new HaquaViewportUI();
     }
 
     @Override
-    protected void installDefaults(JComponent component) {
+    protected void installDefaults(@NotNull JComponent component) {
         // LookAndFeel.installProperty *should* work, but the JRE itself has a bug where JViewport
         // sets itself opaque without resetting the flag indicating that it wasn't set by the caller.
         component.setOpaque(UIManager.getBoolean("Viewport.opaque"));

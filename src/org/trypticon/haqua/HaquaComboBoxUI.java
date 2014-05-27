@@ -19,6 +19,7 @@
 package org.trypticon.haqua;
 
 import com.apple.laf.AquaComboBoxUI;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -34,6 +35,7 @@ import java.awt.Rectangle;
  * @author trejkaz
  */
 public class HaquaComboBoxUI extends AquaComboBoxUI {
+    @NotNull
     @SuppressWarnings("UnusedDeclaration") // called via reflection
     public static ComponentUI createUI(JComponent component) {
         return new HaquaComboBoxUI();
@@ -50,6 +52,7 @@ public class HaquaComboBoxUI extends AquaComboBoxUI {
         return popup;
     }
 
+    @NotNull
     @Override
     protected LayoutManager createLayoutManager() {
         return new HaquaComboBoxLayoutManager(super.createLayoutManager());

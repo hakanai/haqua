@@ -18,6 +18,8 @@
 
 package org.trypticon.haqua.demo;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -29,11 +31,13 @@ import java.awt.FlowLayout;
  * @author trejkaz
  */
 public class SegmentedButtonDemo implements Demo {
+    @NotNull
     @Override
     public String getName() {
         return "Segmented Buttons";
     }
 
+    @NotNull
     @Override
     public JPanel createPanel() {
         String[] buttonTypes = { "segmented", "segmentedRoundRect", "segmentedCapsule", "segmentedTextured", "segmentedGradient" };

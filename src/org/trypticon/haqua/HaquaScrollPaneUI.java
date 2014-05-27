@@ -19,6 +19,7 @@
 package org.trypticon.haqua;
 
 import com.apple.laf.AquaScrollPaneUI;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
@@ -30,6 +31,7 @@ import javax.swing.plaf.ComponentUI;
  * @author trejkaz
  */
 public class HaquaScrollPaneUI extends AquaScrollPaneUI {
+    @NotNull
     @SuppressWarnings("UnusedDeclaration") // called via reflection
     public static ComponentUI createUI(JComponent component) {
         return new HaquaScrollPaneUI();

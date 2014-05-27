@@ -18,6 +18,9 @@
 
 package org.trypticon.haqua.reflection;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.AccessibleObject;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -29,8 +32,9 @@ class Reflection {
     private Reflection() {
     }
 
-    static void makeAccessible(final AccessibleObject object) {
+    static void makeAccessible(@NotNull final AccessibleObject object) {
         AccessController.doPrivileged(new PrivilegedAction<Void>() {
+            @Nullable
             @Override
             public Void run() {
                 object.setAccessible(true);

@@ -19,6 +19,7 @@
 package org.trypticon.haqua;
 
 import com.apple.laf.AquaToolBarUI;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JComponent;
 import javax.swing.RootPaneContainer;
@@ -33,6 +34,7 @@ import java.awt.event.MouseEvent;
  * @author trejkaz
  */
 public class HaquaToolBarUI extends AquaToolBarUI {
+    @NotNull
     @SuppressWarnings("UnusedDeclaration") // called via reflection
     public static ComponentUI createUI(JComponent component) {
         return new HaquaToolBarUI();
@@ -64,7 +66,7 @@ public class HaquaToolBarUI extends AquaToolBarUI {
         private int dY;
 
         @Override
-        public void mousePressed(MouseEvent event) {
+        public void mousePressed(@NotNull MouseEvent event) {
             if (toolBar.isFloatable()) {
                 return;
             }
@@ -91,7 +93,7 @@ public class HaquaToolBarUI extends AquaToolBarUI {
         }
 
         @Override
-        public void mouseDragged(MouseEvent event) {
+        public void mouseDragged(@NotNull MouseEvent event) {
             if (dragging) {
                 Window window = SwingUtilities.getWindowAncestor(toolBar);
                 if (window != null) { // which it should never be

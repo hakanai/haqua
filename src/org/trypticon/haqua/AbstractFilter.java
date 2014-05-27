@@ -18,6 +18,9 @@
 
 package org.trypticon.haqua;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.Point2D;
@@ -32,13 +35,15 @@ import java.awt.image.WritableRaster;
  */
 abstract class AbstractFilter implements BufferedImageOp {
 
+    @NotNull
     @Override
-    public Rectangle2D getBounds2D(BufferedImage src) {
+    public Rectangle2D getBounds2D(@NotNull BufferedImage src) {
         return new Rectangle(0, 0, src.getWidth(), src.getHeight());
     }
 
+    @Nullable
     @Override
-    public BufferedImage createCompatibleDestImage(BufferedImage src, ColorModel destCM) {
+    public BufferedImage createCompatibleDestImage(@NotNull BufferedImage src, @Nullable ColorModel destCM) {
         if (destCM == null) {
             destCM = src.getColorModel();
         }
@@ -47,11 +52,13 @@ abstract class AbstractFilter implements BufferedImageOp {
         return new BufferedImage(destCM, raster, destCM.isAlphaPremultiplied(), null);
     }
 
+    @NotNull
     @Override
-    public Point2D getPoint2D(Point2D srcPt, Point2D dstPt) {
+    public Point2D getPoint2D(@NotNull Point2D srcPt, Point2D dstPt) {
         return (Point2D) srcPt.clone();
     }
 
+    @Nullable
     @Override
     public RenderingHints getRenderingHints() {
         return null;

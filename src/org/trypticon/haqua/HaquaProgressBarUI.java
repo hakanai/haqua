@@ -19,6 +19,7 @@
 package org.trypticon.haqua;
 
 import com.apple.laf.AquaProgressBarUI;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JComponent;
 import javax.swing.JProgressBar;
@@ -37,6 +38,7 @@ public class HaquaProgressBarUI extends AquaProgressBarUI {
     // look and feel would have put it.
     private static final int STRING_OFFSET = 1;
 
+    @NotNull
     @SuppressWarnings("UnusedDeclaration") // called via reflection
     public static ComponentUI createUI(JComponent component) {
         return new HaquaProgressBarUI();

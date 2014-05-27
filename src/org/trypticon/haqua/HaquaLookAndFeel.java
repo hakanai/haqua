@@ -19,6 +19,7 @@
 package org.trypticon.haqua;
 
 import com.apple.laf.AquaLookAndFeel;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.LayoutStyle;
 import javax.swing.UIDefaults;
@@ -42,13 +43,14 @@ import javax.swing.plaf.ColorUIResource;
  * @author trejkaz
  */
 public class HaquaLookAndFeel extends AquaLookAndFeel {
+    @NotNull
     @Override
     public LayoutStyle getLayoutStyle() {
         return new AquaLayoutStyle();
     }
 
     @Override
-    protected void initClassDefaults(UIDefaults defaults) {
+    protected void initClassDefaults(@NotNull UIDefaults defaults) {
         super.initClassDefaults(defaults);
 
         defaults.put("ButtonUI", "org.trypticon.haqua.HaquaButtonUI");
@@ -66,7 +68,7 @@ public class HaquaLookAndFeel extends AquaLookAndFeel {
     }
 
     @Override
-    protected void initComponentDefaults(UIDefaults defaults) {
+    protected void initComponentDefaults(@NotNull UIDefaults defaults) {
         super.initComponentDefaults(defaults);
 
         final Object controlSmallFont = defaults.get("IconButton.font");

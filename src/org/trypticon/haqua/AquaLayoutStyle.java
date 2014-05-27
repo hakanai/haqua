@@ -19,6 +19,8 @@
 package org.trypticon.haqua;
 
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import sun.swing.DefaultLayoutStyle;
 
 import javax.swing.AbstractButton;
@@ -459,7 +461,8 @@ class AquaLayoutStyle extends DefaultLayoutStyle {
      * The key for the map is the name of the UI, for example, ButtonUI, with
      * a value of ComponentInsets.  Each ComponentInsets may have sub styles.
      */
-    private static Map<String, ComponentInsets> createInsetsMap(Object[][] definitions) {
+    @NotNull
+    private static Map<String, ComponentInsets> createInsetsMap(@NotNull Object[][] definitions) {
         Map<String, ComponentInsets> map = new HashMap<>();
         for (Object[] definition : definitions) {
             int keys = 0;
@@ -498,7 +501,7 @@ class AquaLayoutStyle extends DefaultLayoutStyle {
     }
 
     @Override
-    public int getPreferredGap(JComponent component1, JComponent component2, ComponentPlacement type, int position, Container parent) {
+    public int getPreferredGap(@NotNull JComponent component1, @NotNull JComponent component2, @NotNull ComponentPlacement type, int position, Container parent) {
         // Check args
         super.getPreferredGap(component1, component2, type, position, parent);
 
@@ -596,7 +599,7 @@ class AquaLayoutStyle extends DefaultLayoutStyle {
     }
 
     @SuppressWarnings("StringEquality") // used to compare UI class ID instances, supposedly safe
-    private Insets getPreferredGap(JComponent component, ComponentPlacement type, int sizeStyle) {
+    private Insets getPreferredGap(@NotNull JComponent component, @NotNull ComponentPlacement type, int sizeStyle) {
         Map gapMap;
 
         switch (type) {
@@ -646,7 +649,7 @@ class AquaLayoutStyle extends DefaultLayoutStyle {
     }
 
     @Override
-    public int getContainerGap(JComponent component, int position, Container parent) {
+    public int getContainerGap(@NotNull JComponent component, int position, Container parent) {
         int result;
         int sizeStyle = Math.min(getSizeStyle(component), getSizeStyle(parent));
 
@@ -719,7 +722,7 @@ class AquaLayoutStyle extends DefaultLayoutStyle {
         return getInsets(CONTAINER_GAPS, uid, null,  sizeStyle);
     }
 
-    private Insets getInsets(Map gapMap, String uid, String style,
+    private Insets getInsets(@NotNull Map gapMap, @Nullable String uid, @Nullable String style,
                              int sizeStyle) {
         if (uid == null) {
             uid = "default";
@@ -740,7 +743,7 @@ class AquaLayoutStyle extends DefaultLayoutStyle {
     }
 
     @SuppressWarnings("StringEquality") // used to compare UI class ID instances, supposedly safe
-    private Insets getVisualMargin(JComponent component) {
+    private Insets getVisualMargin(@NotNull JComponent component) {
         String uid = component.getUIClassID();
         String style = null;
         if (uid == "ButtonUI" || uid == "ToggleButtonUI") {
@@ -801,7 +804,7 @@ class AquaLayoutStyle extends DefaultLayoutStyle {
      *
      * @return REGULAR, SMALL or MINI.
      */
-    private int getSizeStyle(Component c) {
+    private int getSizeStyle(@Nullable Component c) {
         // Aqua components have a different style depending on the
         // font size used.
         // 13 Point = Regular
@@ -859,6 +862,7 @@ class AquaLayoutStyle extends DefaultLayoutStyle {
             children.put(subKey, subInsets);
         }
 
+        @Nullable
         ComponentInsets getSubInsets(String subKey) {
             return (children == null) ? null : children.get(subKey);
         }

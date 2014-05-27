@@ -18,6 +18,8 @@
 
 package org.trypticon.haqua.demo.problems;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -78,7 +80,7 @@ public class LayoutStyleAlignmentTest implements Runnable {
 
     private static class LinePaintingPanel extends JPanel {
         @Override
-        public void paint(Graphics g) {
+        public void paint(@NotNull Graphics g) {
             super.paint(g);
 
             int x = getComponent(0).getX() - 1;

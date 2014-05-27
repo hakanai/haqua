@@ -19,6 +19,7 @@
 package org.trypticon.haqua;
 
 import com.apple.laf.AquaTableUI;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JComponent;
 import javax.swing.UIManager;
@@ -38,6 +39,7 @@ import java.beans.PropertyChangeListener;
 public class HaquaTableUI extends AquaTableUI {
     private Handler handler;
 
+    @NotNull
     @SuppressWarnings("UnusedDeclaration") // called via reflection
     public static ComponentUI createUI(JComponent component) {
         return new HaquaTableUI();
@@ -92,7 +94,7 @@ public class HaquaTableUI extends AquaTableUI {
     }
 
     @Override
-    public void paint(Graphics g, JComponent c) {
+    public void paint(@NotNull Graphics g, JComponent c) {
         // Redoing logic super.paint will do to figure out the range of rows we're painting.
         Rectangle clip = g.getClipBounds();
         Point lowerRight = new Point(clip.x + clip.width - 1, clip.y + clip.height - 1);
@@ -126,7 +128,7 @@ public class HaquaTableUI extends AquaTableUI {
 
     private static class Handler implements PropertyChangeListener {
         @Override
-        public void propertyChange(PropertyChangeEvent event) {
+        public void propertyChange(@NotNull PropertyChangeEvent event) {
             // Typically the client code will install its own column model or it will install its own model,
             // which will create a new column model automatically. So we have to chase this and update the
             // margin every time it changes.

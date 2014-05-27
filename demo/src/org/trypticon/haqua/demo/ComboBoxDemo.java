@@ -18,6 +18,8 @@
 
 package org.trypticon.haqua.demo;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -27,6 +29,7 @@ import javax.swing.JPanel;
  * @author trejkaz
  */
 public class ComboBoxDemo implements Demo {
+    @NotNull
     @Override
     public String getName() {
         return "Combo Boxes";

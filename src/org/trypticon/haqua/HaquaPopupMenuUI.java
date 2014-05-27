@@ -19,6 +19,7 @@
 package org.trypticon.haqua;
 
 import com.apple.laf.AquaPopupMenuUI;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -52,13 +53,14 @@ import java.awt.image.BufferedImage;
  * @author trejkaz
  */
 public class HaquaPopupMenuUI extends AquaPopupMenuUI {
+    @NotNull
     @SuppressWarnings("UnusedDeclaration") // called via reflection
     public static ComponentUI createUI(JComponent component) {
         return new HaquaPopupMenuUI();
     }
 
     @Override
-    public Popup getPopup(JPopupMenu popupMenu, int x, int y) {
+    public Popup getPopup(@NotNull JPopupMenu popupMenu, int x, int y) {
         Popup popup = super.getPopup(popupMenu, x, y);
 
         Component invoker = popupMenu.getInvoker();
@@ -102,7 +104,7 @@ public class HaquaPopupMenuUI extends AquaPopupMenuUI {
             }
 
             @Override
-            public void popupMenuWillBecomeInvisible(PopupMenuEvent event) {
+            public void popupMenuWillBecomeInvisible(@NotNull PopupMenuEvent event) {
                 popupWindow.setBackground(originalBackground);
                 popupWindow.setContentPane(originalContentPane);
                 ((JPopupMenu) event.getSource()).removePopupMenuListener(this);
@@ -131,10 +133,11 @@ public class HaquaPopupMenuUI extends AquaPopupMenuUI {
         private static final int LEFT_MARGIN = SHADOW_RADIUS + 1;
         private static final int TOP_MARGIN = 1;
 
+        @NotNull
         private final JPopupMenu popupMenu;
         private final Dimension wrapSize;
 
-        private DropShadowPanel(JPopupMenu popupMenu) {
+        private DropShadowPanel(@NotNull JPopupMenu popupMenu) {
             this.popupMenu = popupMenu;
 
             setBackground(new Color(0, 0, 0, 0));
@@ -153,7 +156,7 @@ public class HaquaPopupMenuUI extends AquaPopupMenuUI {
         }
 
         @Override
-        protected void paintComponent(Graphics g) {
+        protected void paintComponent(@NotNull Graphics g) {
             BufferedImage borderImage = createBorderImage();
             BufferedImage shadow = createShadowImage(borderImage);
 
@@ -189,11 +192,12 @@ public class HaquaPopupMenuUI extends AquaPopupMenuUI {
             return wrapImage;
         }
 
-        private BufferedImage createShadowImage(BufferedImage borderImage) {
+        private BufferedImage createShadowImage(@NotNull BufferedImage borderImage) {
             ShadowRenderer shadowRenderer = new ShadowRenderer(SHADOW_RADIUS, SHADOW_OPACITY, Color.BLACK);
             return shadowRenderer.createShadow(borderImage);
         }
 
+        @NotNull
         private Shape createPopupShape() {
             int width = wrapSize.width + 1;
             int height = wrapSize.height + 1;
@@ -268,7 +272,7 @@ public class HaquaPopupMenuUI extends AquaPopupMenuUI {
             this.color = color;
         }
 
-        private BufferedImage createShadow(final BufferedImage image) {
+        private BufferedImage createShadow(@NotNull final BufferedImage image) {
 
             int shadowSize = size * 2;
 

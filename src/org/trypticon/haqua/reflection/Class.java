@@ -18,6 +18,8 @@
 
 package org.trypticon.haqua.reflection;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +33,7 @@ public class Class<T> {
         this.delegate = delegate;
     }
 
+    @NotNull
     public static <T> Class<? extends T> get(String name, java.lang.Class<T> superclass) {
         try {
             return new Class<>(java.lang.Class.forName(name).asSubclass(superclass));
@@ -39,6 +42,7 @@ public class Class<T> {
         }
     }
 
+    @NotNull
     public List<Field<?>> getFields() {
         java.lang.reflect.Field[] delegates = delegate.getFields();
         List<Field<?>> fields = new ArrayList<>(delegates.length);
@@ -48,6 +52,7 @@ public class Class<T> {
         return fields;
     }
 
+    @NotNull
     public <T> Field<T> getDeclaredField(String name) {
         try {
             java.lang.reflect.Field field = delegate.getDeclaredField(name);
@@ -58,6 +63,7 @@ public class Class<T> {
         }
     }
 
+    @NotNull
     public Constructor<T> getDeclaredConstructor(java.lang.Class<?>... parameterTypes) {
         try {
             final java.lang.reflect.Constructor<T> constructor = delegate.getDeclaredConstructor(parameterTypes);
@@ -68,6 +74,7 @@ public class Class<T> {
         }
     }
 
+    @NotNull
     public <T> Method<T> getDeclaredMethod(String name, java.lang.Class<?>... parameterTypes) {
         try {
             final java.lang.reflect.Method method = delegate.getDeclaredMethod(name, parameterTypes);
