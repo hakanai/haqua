@@ -63,6 +63,7 @@ public class HaquaLookAndFeel extends AquaLookAndFeel {
         defaults.put("ScrollPaneUI", "org.trypticon.haqua.HaquaScrollPaneUI");
         defaults.put("ViewportUI", "org.trypticon.haqua.HaquaViewportUI");
         defaults.put("PopupMenuUI", "org.trypticon.haqua.HaquaPopupMenuUI");
+        defaults.put("OptionPaneUI", "org.trypticon.haqua.HaquaOptionPaneUI");
     }
 
     @Override
