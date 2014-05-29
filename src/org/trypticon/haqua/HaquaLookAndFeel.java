@@ -20,8 +20,10 @@ package org.trypticon.haqua;
 
 import com.apple.laf.AquaLookAndFeel;
 
+import javax.swing.BorderFactory;
 import javax.swing.LayoutStyle;
 import javax.swing.UIDefaults;
+import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.ColorUIResource;
 
 /**
@@ -90,6 +92,18 @@ public class HaquaLookAndFeel extends AquaLookAndFeel {
 
         // Opaque JViewport looks wrong when you have a JPanel in it.
         defaults.put("Viewport.opaque", false);
+
+        // Default spacing doesn't match native apps.
+        defaults.put("OptionPane.border", new BorderUIResource(BorderFactory.createEmptyBorder(0, 21, 3, 21)));
+        defaults.put("OptionPane.buttonAreaBorder", new BorderUIResource(BorderFactory.createEmptyBorder()));
+        // Default text style doesn't match native apps.
+        String css = "<head>"+
+                "<style type=\"text/css\">"+
+                "b { font: 13pt \"Lucida Grande\" }"+
+                "p { font: 11pt \"Lucida Grande\"; margin-top: 8px }"+
+                "</style>"+
+                "</head>";
+        defaults.put("OptionPane.css", css);
     }
 
 }

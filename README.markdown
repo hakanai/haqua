@@ -120,6 +120,7 @@ JScrollPane:
 JOptionPane:
 
 * Buttons no longer grow to become the width of the widest button.
+* Better CSS stored into OptionPane.css for apps to use when displaying messages.
 * JOptionPane.destructiveOption supported to mark the button which should be positioned
   away from the others.
 
