@@ -94,7 +94,7 @@ public class HaquaLookAndFeel extends AquaLookAndFeel {
         defaults.put("Viewport.opaque", false);
 
         // Default spacing doesn't match native apps.
-        defaults.put("OptionPane.border", new BorderUIResource(BorderFactory.createEmptyBorder(0, 21, 3, 21)));
+        defaults.put("OptionPane.border", new BorderUIResource(BorderFactory.createEmptyBorder(3, 21, 3, 21)));
         defaults.put("OptionPane.buttonAreaBorder", new BorderUIResource(BorderFactory.createEmptyBorder()));
         // Default text style doesn't match native apps.
         String css = "<head>"+
