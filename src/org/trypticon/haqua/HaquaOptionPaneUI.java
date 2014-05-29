@@ -21,6 +21,7 @@ package org.trypticon.haqua;
 import com.apple.laf.AquaOptionPaneUI;
 
 import javax.swing.GroupLayout;
+import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.plaf.ComponentUI;
 import java.awt.Component;
@@ -60,16 +61,16 @@ public class HaquaOptionPaneUI extends AquaOptionPaneUI {
         Container messageArea = createMessageArea();
         Container buttonArea = createButtonArea();
 
-        //getIcon().getIconWidth();
-
         GroupLayout layout = new GroupLayout(optionPane);
         optionPane.setLayout(layout);
 
-        int kDialogLargePadding = 23; // private in superclass
+        Icon icon = getIcon();
+        int iconGap = icon == null ? 0 : icon.getIconWidth() + kDialogLargePadding;
+
         layout.setHorizontalGroup(layout.createParallelGroup()
                                       .addComponent(messageArea)
                                       .addGroup(layout.createSequentialGroup()
-                                                    .addGap(getIcon().getIconWidth() + kDialogLargePadding)
+                                                    .addGap(iconGap)
                                                     .addComponent(buttonArea)));
 
         layout.setVerticalGroup(layout.createSequentialGroup()
