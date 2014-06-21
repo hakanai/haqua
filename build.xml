@@ -73,7 +73,7 @@
 
         <artifact:deploy file="build/haqua-${app.version}.jar">
             <remoteRepository url="https://oss.sonatype.org/service/local/staging/deploy/maven2">
-                <authentication username="trejkaz" password="NGHzFFTbVaKKWwWkuod96FgmiFvD"/>
+                <authentication username="trejkaz" password="${sonatype.password}"/>
             </remoteRepository>
             <pom file="pom.xml"/>
             <attach file="build/haqua-${app.version}-sources.jar" type="jar" classifier="sources"/>
