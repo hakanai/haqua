@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
+import java.awt.Graphics;
 
 /**
  * @author trejkaz
@@ -42,5 +43,10 @@ public class HaquaPanelUI extends AquaPanelUI {
 
         // Despite having set the default for Panel.opaque to false, Aqua seems to be ignoring the value.
         LookAndFeel.installProperty(panel, "opaque", UIManager.get("Panel.opaque"));
+    }
+
+    @Override
+    public void paint(Graphics g, JComponent c) {
+        super.paint(g, c);
     }
 }

@@ -117,6 +117,13 @@ JScrollPane:
 * Scroll panes (and their contained viewports) are non-opaque by default, to fix appearance
   the pane contains a non-opaque component.
 
+JOptionPane:
+
+* Buttons no longer grow to become the width of the widest button.
+* Better CSS stored into OptionPane.css for apps to use when displaying messages.
+* JOptionPane.destructiveOption supported to mark the button which should be positioned
+  away from the others.
+
 TitledBorder:
 
 * Borders appear in the proper Aqua style instead of the default etched border.

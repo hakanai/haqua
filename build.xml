@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<project name="haqua" default="jar">
+<project name="haqua" default="jar" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
     <property file="app.properties"/>
 
     <target name="compile">
@@ -36,6 +36,23 @@
         </jar>
     </target>
 
+    <target name="javadoc">
+        <mkdir dir="build/javadoc"/>
+        <javadoc sourcepath="src" destdir="build/javadoc"/>
+    </target>
+
+    <target name="javadoc-jar" depends="javadoc">
+        <jar jarfile="build/haqua-${app.version}-javadoc.jar">
+            <fileset dir="build/javadoc"/>
+        </jar>
+    </target>
+
+    <target name="sources-jar">
+        <jar jarfile="build/haqua-${app.version}-sources.jar">
+            <fileset dir="src" includes="**/*.java"/>
+        </jar>
+    </target>
+
     <target name="dist-cycle" depends="clean, jar" description="Cleans and builds distribution files">
         <mkdir dir="build"/>
 
@@ -49,6 +66,27 @@
             <zipfileset prefix="haqua-bin-${app.version}" dir="build" includes="haqua-${app.version}.jar"/>
             <zipfileset prefix="haqua-bin-${app.version}" dir="." includes="COPYING, COPYING.LESSER, README.markdown"/>
         </zip>
+    </target>
+
+    <target name="stage" depends="jar, sources-jar, javadoc-jar">
+        <exec executable="gpg"><arg line="--sign --detach-sign --armor --quiet --out build/haqua-${app.version}.pom.asc pom.xml"/></exec>
+        <exec executable="gpg"><arg line="--sign --detach-sign --armor --quiet --out build/haqua-${app.version}.jar.asc build/haqua-${app.version}.jar"/></exec>
+        <exec executable="gpg"><arg line="--sign --detach-sign --armor --quiet --out build/haqua-${app.version}-sources.jar.asc build/haqua-${app.version}-sources.jar"/></exec>
+        <exec executable="gpg"><arg line="--sign --detach-sign --armor --quiet --out build/haqua-${app.version}-javadoc.jar.asc build/haqua-${app.version}-javadoc.jar"/></exec>
+
+        <artifact:deploy file="build/haqua-${app.version}.jar">
+            <remoteRepository url="https://oss.sonatype.org/service/local/staging/deploy/maven2">
+                <authentication username="trejkaz" password="${sonatype.password}"/>
+            </remoteRepository>
+            <pom file="pom.xml"/>
+            <attach file="build/haqua-${app.version}-sources.jar" type="jar" classifier="sources"/>
+            <attach file="build/haqua-${app.version}-javadoc.jar" type="jar" classifier="javadoc"/>
+
+            <attach file="build/haqua-${app.version}.pom.asc" type="pom.asc"/>
+            <attach file="build/haqua-${app.version}.jar.asc" type="jar.asc"/>
+            <attach file="build/haqua-${app.version}-sources.jar.asc" type="jar.asc" classifier="sources"/>
+            <attach file="build/haqua-${app.version}-javadoc.jar.asc" type="jar.asc" classifier="javadoc"/>
+        </artifact:deploy>
     </target>
 
     <target name="clean">
