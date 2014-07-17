@@ -89,6 +89,9 @@ public class HaquaLookAndFeel extends AquaLookAndFeel {
         // Paint table backgrounds all the way down the viewport.
         defaults.put("Table.fillsViewportHeight", true);
 
+        // Because we paint the tree rows, the background of the renderer itself should be transparent.
+        defaults.put("Tree.rendererFillBackground", false);
+
         // Opaque JPanel looks wrong inside JTabbedPane and probably elsewhere.
         defaults.put("Panel.opaque", false);
 
