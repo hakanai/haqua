@@ -75,15 +75,22 @@ public class HaquaToolBarUI extends AquaToolBarUI {
             if (window instanceof RootPaneContainer &&
                     Boolean.TRUE.equals(((RootPaneContainer) window).getRootPane().getClientProperty("apple.awt.brushMetalLook"))) {
 
-                // There is a "apple.awt.draggableWindowBackground" client property which does something like this,
-                // but despite documentation saying that clicking on heavyweight components will not drag the window,
-                // even clicking on heavyweight components like Panel will drag the window.
+                // Only drag the toolbar if it's connected to the top of the window. Otherwise toolbars all
+                // throughout an application will support dragging the window.
+                Point toolbarLocation = SwingUtilities.convertPoint(toolBar.getParent(), toolBar.getLocation(),
+                                                                    ((RootPaneContainer) window).getRootPane());
+                if (toolbarLocation.y == 0)
+                {
+                    // There is a "apple.awt.draggableWindowBackground" client property which does something like this,
+                    // but despite documentation saying that clicking on heavyweight components will not drag the window,
+                    // even clicking on heavyweight components like Panel will drag the window.
 
-                Point clickPoint = new Point(event.getPoint());
-                SwingUtilities.convertPointToScreen(clickPoint, toolBar);
-                dX = clickPoint.x - window.getX();
-                dY = clickPoint.y - window.getY();
-                dragging = true;
+                    Point clickPoint = new Point(event.getPoint());
+                    SwingUtilities.convertPointToScreen(clickPoint, toolBar);
+                    dX = clickPoint.x - window.getX();
+                    dY = clickPoint.y - window.getY();
+                    dragging = true;
+                }
             }
         }
 
