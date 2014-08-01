@@ -107,7 +107,8 @@ public class HaquaOptionPaneUI extends AquaOptionPaneUI {
             Dimension[] buttonSizes = computeButtonSizes(children);
             Insets insets = container.getInsets();
 
-            int xLocation = container.getSize().width;
+            int containerWidth = container.getSize().width;
+            int xLocation = containerWidth;
             int yLocation = insets.top;
 
             for (int i = 0; i < numChildren; i++) {
@@ -121,6 +122,28 @@ public class HaquaOptionPaneUI extends AquaOptionPaneUI {
                 xLocation -= padding;
 
                 // Now xLocation == the right edge of the next button.
+            }
+
+            if (!container.getComponentOrientation().isLeftToRight()) {
+
+                // --[Discard Changes]------[Cancel ]-[Save   ]--
+                //                                    ^         ^
+                //                                    |---------| containerWidth - xLocation
+
+                // --[Save   ]-[Cancel ]------[Discard Changes]--
+                // ^ ^
+                // |-| containerWidth - (xLocation + buttonWidth)
+
+                for (int i = 0; i < numChildren; i++) {
+                    Component child = children[i];
+                    xLocation = child.getX();
+                    int buttonWidth = child.getWidth();
+                    children[i].setBounds(containerWidth - (xLocation + buttonWidth),
+                                          child.getY(),
+                                          buttonWidth,
+                                          child.getHeight());
+
+                }
             }
         }
 

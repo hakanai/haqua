@@ -123,6 +123,7 @@ JOptionPane:
 * Better CSS stored into OptionPane.css for apps to use when displaying messages.
 * JOptionPane.destructiveOption supported to mark the button which should be positioned
   away from the others.
+* OK/Cancel properly flip direction for right-to-left locales.
 
 TitledBorder:
 
