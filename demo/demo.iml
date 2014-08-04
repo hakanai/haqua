@@ -17,6 +17,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="JetBrains Annotations" level="project" />
   </component>
 </module>
 
