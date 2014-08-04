@@ -9,6 +9,6 @@ X.X [XXXX-XX-XX]
   Fixed: Tree collapsed + selected icons painting in the wrong orientation for right-to-left.
   Fixed: IndexOutOfBoundsException on a JTabbedPane with no tabs.
 
-1.0 [XXXX-XX-XX TODO fill this in using metadata from the jar]
+0.1 [2014-06-21]
 
 Initial release
