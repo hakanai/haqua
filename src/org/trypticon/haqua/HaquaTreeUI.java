@@ -27,15 +27,18 @@ import javax.swing.JComponent;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Rectangle;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * @author trejkaz
@@ -64,11 +67,13 @@ public class HaquaTreeUI extends AquaTreeUI {
             handler = new AdditionalHandler();
         }
         tree.addMouseListener(handler);
+        tree.addPropertyChangeListener("componentOrientation", handler);
     }
 
     @Override
     protected void uninstallListeners() {
         tree.removeMouseListener(handler);
+        tree.removePropertyChangeListener("componentOrientation", handler);
         super.uninstallListeners();
     }
 
@@ -181,9 +186,14 @@ public class HaquaTreeUI extends AquaTreeUI {
 
     @Override
     protected void paintExpandControl(final Graphics g, final Rectangle clipBounds,
-                                      final Insets insets, final Rectangle bounds,
+                                      final Insets insets, Rectangle bounds,
                                       final TreePath path, final int row,
                                       final boolean isExpanded, final boolean hasBeenExpanded, final boolean isLeaf) {
+
+        // The caller in AquaTreeUI messes up by passing the wrong path, resulting in momentarily
+        // painting the control in the wrong location while it is animating.
+        bounds = getPathBounds(tree, path);
+
         if (tree.isPathSelected(path) && FocusUtils.isInActiveWindow(tree)) {
 
             // Trick the superclass into thinking we're using custom icons, so that it won't use its own
@@ -207,13 +217,38 @@ public class HaquaTreeUI extends AquaTreeUI {
         }
     }
 
-    private class AdditionalHandler extends MouseAdapter {
+    private class AdditionalHandler implements MouseListener, PropertyChangeListener {
         @Override
         public void mousePressed(MouseEvent event) {
             TreePath pressedPath = getClosestPathForLocation(tree, event.getX(), event.getY());
             if (pressedPath != null &&
                     !isLocationInExpandControl(pressedPath, event.getX(), event.getY())) {
                 selectPathForEvent(pressedPath, event);
+            }
+        }
+
+        @Override
+        public void mouseExited(MouseEvent event) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent event) {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent event) {
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent event) {
+        }
+
+        @Override
+        public void propertyChange(PropertyChangeEvent event) {
+            treeState.invalidateSizes();
+            TreeModel model = tree.getModel();
+            if (model != null) {
+                treeState.invalidatePathBounds(new TreePath(model.getRoot()));
             }
         }
     }

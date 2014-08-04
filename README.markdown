@@ -92,6 +92,8 @@ JTree:
   implemented.)
 * Mouse clicks on the row select the node (instead of just clicks on the node.)
 * Selected nodes paint using the proper inactive alternate colours when the window is inactive.
+* Clicking the expander no longer momentarily paints the expander far over the left of the
+  tree when component orientation is right-to-left.
 
 JPanel:
 
