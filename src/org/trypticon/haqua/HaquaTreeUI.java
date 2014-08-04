@@ -24,7 +24,6 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
-import javax.swing.JTree;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.tree.TreeCellRenderer;
@@ -34,6 +33,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 /**
@@ -46,10 +47,27 @@ public class HaquaTreeUI extends AquaTreeUI {
     private Icon pressedSelectedExpandedIcon;
     private int selectionBackgroundForIcons;
 
+    private AdditionalHandler handler;
+
     @NotNull
     @SuppressWarnings("UnusedDeclaration") // called via reflection
     public static ComponentUI createUI(JComponent component) {
         return new HaquaTreeUI();
+    }
+
+    @Override
+    protected void installListeners() {
+        super.installListeners();
+        if (handler == null) {
+            handler = new AdditionalHandler();
+        }
+        tree.addMouseListener(handler);
+    }
+
+    @Override
+    protected void uninstallListeners() {
+        tree.removeMouseListener(handler);
+        super.uninstallListeners();
     }
 
     private void lazyInitialiseIcons() {
@@ -139,29 +157,6 @@ public class HaquaTreeUI extends AquaTreeUI {
     }
 
     @Override
-    public Rectangle getPathBounds(@NotNull JTree tree, TreePath path) {
-        Rectangle bounds = super.getPathBounds(tree, path);
-        if (bounds != null) {
-            Insets insets = tree.getInsets();
-            if (tree.getComponentOrientation().isLeftToRight()) {
-                // Expand the path bounds to cover everything to the right of the label.
-                // The main effect of this is that clicking to the right will still select the row.
-                bounds.width = tree.getWidth() - bounds.x - insets.right;
-            } else {
-                // Expand the path bounds to cover everything to the left of the label.
-                bounds.width += bounds.x - insets.left;
-                bounds.x = insets.left;
-            }
-        }
-        return bounds;
-    }
-
-    @Override
-    public TreePath getClosestPathForLocation(JTree treeLocal, int x, int y) {
-        return super.getClosestPathForLocation(treeLocal, x, y);
-    }
-
-    @Override
     protected void handleExpandControlClick(TreePath path, final int mouseX, final int mouseY) {
         if (tree.isPathSelected(path)) {
             // Trick the handler the superclass will create into storing the selection background colour
@@ -204,6 +199,17 @@ public class HaquaTreeUI extends AquaTreeUI {
             }
         } else {
             super.paintExpandControl(g, clipBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf);
+        }
+    }
+
+    private class AdditionalHandler extends MouseAdapter {
+        @Override
+        public void mousePressed(MouseEvent event) {
+            TreePath pressedPath = getClosestPathForLocation(tree, event.getX(), event.getY());
+            if (pressedPath != null &&
+                    !isLocationInExpandControl(pressedPath, event.getX(), event.getY())) {
+                selectPathForEvent(pressedPath, event);
+            }
         }
     }
 }
