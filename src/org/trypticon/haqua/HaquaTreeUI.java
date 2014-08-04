@@ -143,9 +143,15 @@ public class HaquaTreeUI extends AquaTreeUI {
         Rectangle bounds = super.getPathBounds(tree, path);
         if (bounds != null) {
             Insets insets = tree.getInsets();
-            // Expand the path bounds to cover everything to the right of the label.
-            // The main effect of this is that clicking to the right will still select the row.
-            bounds.width = tree.getWidth() - bounds.x - insets.right;
+            if (tree.getComponentOrientation().isLeftToRight()) {
+                // Expand the path bounds to cover everything to the right of the label.
+                // The main effect of this is that clicking to the right will still select the row.
+                bounds.width = tree.getWidth() - bounds.x - insets.right;
+            } else {
+                // Expand the path bounds to cover everything to the left of the label.
+                bounds.width += bounds.x - insets.left;
+                bounds.x = insets.left;
+            }
         }
         return bounds;
     }
