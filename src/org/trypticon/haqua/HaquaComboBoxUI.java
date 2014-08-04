@@ -28,6 +28,7 @@ import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.ComboPopup;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 
@@ -61,6 +62,23 @@ public class HaquaComboBoxUI extends AquaComboBoxUI {
     // Returns the same thing as the similarly-named method in the superclass. We're just making it visible.
     protected static boolean isPopDown(final JComboBox c) {
         return AquaComboBoxUI.isPopdown(c);
+    }
+
+    @Override
+    protected Rectangle rectangleForCurrentValue() {
+        // Copy of what's in BasicComboBoxUI, minus the left-to-right check.
+        // Reasoning is that Aqua combo boxes always have the arrow on the right,
+        // so it is incorrect to move the text field to the right to make way for an arrow on the left.
+        int width = comboBox.getWidth();
+        int height = comboBox.getHeight();
+        Insets insets = getInsets();
+        int buttonSize = height - (insets.top + insets.bottom);
+        if (arrowButton != null) {
+            buttonSize = arrowButton.getWidth();
+        }
+        return new Rectangle(insets.left, insets.top,
+                             width - (insets.left + insets.right + buttonSize),
+                             height - (insets.top + insets.bottom));
     }
 
     private class HaquaComboBoxLayoutManager extends BasicComboBoxUI.ComboBoxLayoutManager {

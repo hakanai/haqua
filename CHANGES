@@ -4,6 +4,8 @@ X.X [XXXX-XX-XX]
     New: OK/Cancel on JOptionPane will properly flip for right-to-left locales.
     New: Clicking the expander no longer momentarily paints the expander far over the left of
          the tree when component orientation is right-to-left.
+    New: Editable combo box no longer paints the text field in the wrong location when
+         component orientation is right-to-left.
 
   Fixed: Toolbars anywhere in the window would drag the window - now only the top one does it.
   Fixed: Tree bounds extended to the right to allow clicking anywhere in the row, but that has
