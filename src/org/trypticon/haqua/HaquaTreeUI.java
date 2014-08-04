@@ -42,8 +42,10 @@ import java.awt.image.BufferedImage;
  */
 public class HaquaTreeUI extends AquaTreeUI {
     private Icon selectedCollapsedIcon;
+    private Icon selectedRtlCollapsedIcon;
     private Icon selectedExpandedIcon;
     private Icon pressedSelectedCollapsedIcon;
+    private Icon pressedSelectedRtlCollapsedIcon;
     private Icon pressedSelectedExpandedIcon;
     private int selectionBackgroundForIcons;
 
@@ -78,21 +80,22 @@ public class HaquaTreeUI extends AquaTreeUI {
         if (selectedCollapsedIcon == null || selectionBackgroundForIcons != selectionBackground.getRGB()) {
             selectionBackgroundForIcons = selectionBackground.getRGB();
 
-            Icon normalCollapsedIcon = UIManager.getIcon(
-                    tree.getComponentOrientation().isLeftToRight() ?
-                    "Tree.collapsedIcon" : "Tree.rightToLeftCollapsedIcon");
+            Icon normalCollapsedIcon = UIManager.getIcon("Tree.collapsedIcon");
+            Icon normalRtlCollapsedIcon = UIManager.getIcon("Tree.rightToLeftCollapsedIcon");
             Icon normalExpandedIcon = UIManager.getIcon("Tree.expandedIcon");
 
-            selectedExpandedIcon = createAlternateColourVersion(normalExpandedIcon, selectionForeground);
             selectedCollapsedIcon = createAlternateColourVersion(normalCollapsedIcon, selectionForeground);
+            selectedRtlCollapsedIcon = createAlternateColourVersion(normalRtlCollapsedIcon, selectionForeground);
+            selectedExpandedIcon = createAlternateColourVersion(normalExpandedIcon, selectionForeground);
 
             // Colour of the disclosure triangle when you are pressing it is subtly different.
             Color pressedDisclosureTriangleForeground = new Color(
                     derivePressedColourComponent(selectionBackground.getRed()),
                     derivePressedColourComponent(selectionBackground.getGreen()),
                     derivePressedColourComponent(selectionBackground.getBlue()));
-            pressedSelectedExpandedIcon = createAlternateColourVersion(normalExpandedIcon, pressedDisclosureTriangleForeground);
             pressedSelectedCollapsedIcon = createAlternateColourVersion(normalCollapsedIcon, pressedDisclosureTriangleForeground);
+            pressedSelectedRtlCollapsedIcon = createAlternateColourVersion(normalRtlCollapsedIcon, pressedDisclosureTriangleForeground);
+            pressedSelectedExpandedIcon = createAlternateColourVersion(normalExpandedIcon, pressedDisclosureTriangleForeground);
         }
     }
 
@@ -190,8 +193,10 @@ public class HaquaTreeUI extends AquaTreeUI {
             Icon oldCollapsedIcon = getCollapsedIcon();
             try {
                 lazyInitialiseIcons();
+                boolean ltr = tree.getComponentOrientation().isLeftToRight();
                 setExpandedIcon(fIsPressed ? pressedSelectedExpandedIcon : selectedExpandedIcon);
-                setCollapsedIcon(fIsPressed ? pressedSelectedCollapsedIcon : selectedCollapsedIcon);
+                setCollapsedIcon(fIsPressed ? (ltr ? pressedSelectedCollapsedIcon : pressedSelectedRtlCollapsedIcon)
+                                            : (ltr ? selectedCollapsedIcon : selectedRtlCollapsedIcon));
                 super.paintExpandControl(g, clipBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf);
             } finally {
                 setExpandedIcon(oldExpandedIcon);
