@@ -18,6 +18,8 @@
 
 package org.trypticon.haqua.demo;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -28,11 +30,13 @@ import javax.swing.JRadioButton;
  * @author trejkaz
  */
 public class OtherButtonDemo implements Demo {
+    @NotNull
     @Override
     public String getName() {
         return "Other Buttons";
     }
 
+    @NotNull
     @Override
     public JPanel createPanel() {
         String[] sizeVariants = { null, "small", "mini" };

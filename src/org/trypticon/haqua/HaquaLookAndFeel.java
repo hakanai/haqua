@@ -19,6 +19,7 @@
 package org.trypticon.haqua;
 
 import com.apple.laf.AquaLookAndFeel;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.BorderFactory;
 import javax.swing.LayoutStyle;
@@ -44,13 +45,14 @@ import javax.swing.plaf.ColorUIResource;
  * @author trejkaz
  */
 public class HaquaLookAndFeel extends AquaLookAndFeel {
+    @NotNull
     @Override
     public LayoutStyle getLayoutStyle() {
         return new AquaLayoutStyle();
     }
 
     @Override
-    protected void initClassDefaults(UIDefaults defaults) {
+    protected void initClassDefaults(@NotNull UIDefaults defaults) {
         super.initClassDefaults(defaults);
 
         defaults.put("ButtonUI", "org.trypticon.haqua.HaquaButtonUI");
@@ -69,7 +71,7 @@ public class HaquaLookAndFeel extends AquaLookAndFeel {
     }
 
     @Override
-    protected void initComponentDefaults(UIDefaults defaults) {
+    protected void initComponentDefaults(@NotNull UIDefaults defaults) {
         super.initComponentDefaults(defaults);
 
         final Object controlSmallFont = defaults.get("IconButton.font");
@@ -86,6 +88,9 @@ public class HaquaLookAndFeel extends AquaLookAndFeel {
         defaults.put("Table.columnMargin", 0);
         // Paint table backgrounds all the way down the viewport.
         defaults.put("Table.fillsViewportHeight", true);
+
+        // Because we paint the tree rows, the background of the renderer itself should be transparent.
+        defaults.put("Tree.rendererFillBackground", false);
 
         // Opaque JPanel looks wrong inside JTabbedPane and probably elsewhere.
         defaults.put("Panel.opaque", false);

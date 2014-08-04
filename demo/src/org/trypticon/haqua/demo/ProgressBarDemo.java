@@ -18,6 +18,8 @@
 
 package org.trypticon.haqua.demo;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -28,11 +30,13 @@ import javax.swing.JProgressBar;
  * @author trejkaz
  */
 public class ProgressBarDemo implements Demo {
+    @NotNull
     @Override
     public String getName() {
         return "Progress Bars";
     }
 
+    @NotNull
     @Override
     public JPanel createPanel() {
         String[] sizeVariants = { null, "small", "mini" };

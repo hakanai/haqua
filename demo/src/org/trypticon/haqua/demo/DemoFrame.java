@@ -18,15 +18,19 @@
 
 package org.trypticon.haqua.demo;
 
+import javax.swing.ButtonGroup;
+import javax.swing.GroupLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.LayoutStyle;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.Container;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -43,10 +47,17 @@ public class DemoFrame extends JFrame {
         super("Demo");
 
         JToggleButton activateButton = new JToggleButton("Activate Haqua");
+        JToggleButton ltrButton = new JToggleButton("LTR");
+        JToggleButton rtlButton = new JToggleButton("RTL");
         JToolBar toolBar = new JToolBar();
         final Container opaqueWrapper = new ForcedOpaqueWrapper();
 
+        ButtonGroup orientationGroup = new ButtonGroup();
+        orientationGroup.add(ltrButton);
+        orientationGroup.add(rtlButton);
+
         activateButton.putClientProperty("JButton.buttonType", "textured");
+        activateButton.putClientProperty("JButton.segmentPosition", "only");
         activateButton.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent event) {
@@ -63,10 +74,34 @@ public class DemoFrame extends JFrame {
             }
         });
 
+        ltrButton.putClientProperty("JButton.buttonType", "textured");
+        ltrButton.putClientProperty("JButton.segmentPosition", "first");
+        ltrButton.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent event) {
+                if (event.getStateChange() == ItemEvent.SELECTED) {
+                    applyComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+                    repaint();
+                }
+            }
+        });
+
+        rtlButton.putClientProperty("JButton.buttonType", "textured");
+        rtlButton.putClientProperty("JButton.segmentPosition", "last");
+        rtlButton.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent event) {
+                if (event.getStateChange() == ItemEvent.SELECTED) {
+                    applyComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+                    repaint();
+                }
+            }
+        });
+
         Demo[] demos = {
-                new TreeDemo(), new TableDemo(), new TreeTableDemo(),
-                new ComboBoxDemo(), new PopupMenuDemo(),new ProgressBarDemo(),
-                new SegmentedButtonDemo(), new ButtonDemo(), new OtherButtonDemo()
+//                new TreeDemo(), new TableDemo(), new TreeTableDemo(),
+//                new ComboBoxDemo(), new PopupMenuDemo(),new ProgressBarDemo(),
+//                new SegmentedButtonDemo(), new ButtonDemo(), new OtherButtonDemo()
         };
         JTabbedPane tabbedPane = new JTabbedPane();
         for (Demo demo : demos) {
@@ -74,7 +109,21 @@ public class DemoFrame extends JFrame {
         }
 
         toolBar.setFloatable(false);
-        toolBar.add(activateButton);
+
+        GroupLayout toolBarLayout = new GroupLayout(toolBar);
+        toolBar.setLayout(toolBarLayout);
+
+        toolBarLayout.setHorizontalGroup(toolBarLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(activateButton)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ltrButton)
+                .addComponent(rtlButton));
+
+        toolBarLayout.setVerticalGroup(toolBarLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(activateButton)
+                .addComponent(ltrButton)
+                .addComponent(rtlButton));
 
         opaqueWrapper.setLayout(new BorderLayout());
         opaqueWrapper.add(tabbedPane, BorderLayout.CENTER);
@@ -88,6 +137,7 @@ public class DemoFrame extends JFrame {
         pack();
 
         activateButton.setSelected(true);
+        ltrButton.setSelected(true);
     }
 
     private static class ForcedOpaqueWrapper extends JPanel {

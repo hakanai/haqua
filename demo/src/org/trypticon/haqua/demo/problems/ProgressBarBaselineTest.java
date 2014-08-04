@@ -18,6 +18,8 @@
 
 package org.trypticon.haqua.demo.problems;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -62,7 +64,7 @@ public class ProgressBarBaselineTest implements Runnable {
         }
 
         @Override
-        public void paint(Graphics g) {
+        public void paint(@NotNull Graphics g) {
             super.paint(g);
 
             g.setColor(Color.RED);

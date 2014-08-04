@@ -19,6 +19,7 @@
 package org.trypticon.haqua;
 
 import com.apple.laf.AquaTreeUI;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -45,6 +46,7 @@ public class HaquaTreeUI extends AquaTreeUI {
     private Icon pressedSelectedExpandedIcon;
     private int selectionBackgroundForIcons;
 
+    @NotNull
     @SuppressWarnings("UnusedDeclaration") // called via reflection
     public static ComponentUI createUI(JComponent component) {
         return new HaquaTreeUI();
@@ -83,10 +85,11 @@ public class HaquaTreeUI extends AquaTreeUI {
         return (int) Math.floor(153 + (255 - 153) * (double) component / 255);
     }
 
-    private Icon createAlternateColourVersion(Icon icon, final Color colour) {
+    @NotNull
+    private Icon createAlternateColourVersion(@NotNull Icon icon, @NotNull final Color colour) {
         class RecolourFilter extends PerPixelFilter {
             @Override
-            protected void manipulatePixels(int[] pixels) {
+            protected void manipulatePixels(@NotNull int[] pixels) {
                 int rgb = colour.getRGB();
                 for (int i = 0; i < pixels.length; i++) {
                     // Leave the alpha alone, change all RGB values to the target.
@@ -109,7 +112,7 @@ public class HaquaTreeUI extends AquaTreeUI {
     }
 
     @Override
-    protected void paintRow(Graphics g, Rectangle clipBounds, Insets insets, Rectangle bounds, TreePath path, int row, boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) {
+    protected void paintRow(@NotNull Graphics g, @NotNull Rectangle clipBounds, Insets insets, @NotNull Rectangle bounds, TreePath path, int row, boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) {
         // Paint the full row in the appropriate background colour, not just the node.
         if (tree.isPathSelected(path)) {
             Color selectionBackground = UIManager.getColor(
@@ -128,6 +131,7 @@ public class HaquaTreeUI extends AquaTreeUI {
         super.paintRow(g, clipBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf);
     }
 
+    @NotNull
     @Override
     protected TreeCellRenderer createDefaultCellRenderer() {
         // Custom renderer fixes the colours of the tree node itself when the window is inactive.
@@ -135,13 +139,19 @@ public class HaquaTreeUI extends AquaTreeUI {
     }
 
     @Override
-    public Rectangle getPathBounds(JTree tree, TreePath path) {
+    public Rectangle getPathBounds(@NotNull JTree tree, TreePath path) {
         Rectangle bounds = super.getPathBounds(tree, path);
         if (bounds != null) {
             Insets insets = tree.getInsets();
-            // Expand the path bounds to cover everything to the right of the label.
-            // The main effect of this is that clicking to the right will still select the row.
-            bounds.width = tree.getWidth() - bounds.x - insets.right;
+            if (tree.getComponentOrientation().isLeftToRight()) {
+                // Expand the path bounds to cover everything to the right of the label.
+                // The main effect of this is that clicking to the right will still select the row.
+                bounds.width = tree.getWidth() - bounds.x - insets.right;
+            } else {
+                // Expand the path bounds to cover everything to the left of the label.
+                bounds.width += bounds.x - insets.left;
+                bounds.x = insets.left;
+            }
         }
         return bounds;
     }

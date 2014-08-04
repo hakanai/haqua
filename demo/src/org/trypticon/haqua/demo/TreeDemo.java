@@ -18,6 +18,8 @@
 
 package org.trypticon.haqua.demo;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -31,11 +33,13 @@ import java.awt.BorderLayout;
  * @author trejkaz
  */
 public class TreeDemo implements Demo {
+    @NotNull
     @Override
     public String getName() {
         return "Trees";
     }
 
+    @NotNull
     @Override
     public JPanel createPanel() {
         JPanel panel = new JPanel(new BorderLayout());

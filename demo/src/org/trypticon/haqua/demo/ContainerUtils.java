@@ -18,13 +18,16 @@
 
 package org.trypticon.haqua.demo;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.*;
 
 /**
  * @author trejkaz
  */
 class ContainerUtils {
-    static JPanel createGridPanel(JComponent[][] rows) {
+    @NotNull
+    static JPanel createGridPanel(@NotNull JComponent[][] rows) {
         JPanel panel = new JPanel();
         GroupLayout layout = new GroupLayout(panel);
         layout.setAutoCreateGaps(true);

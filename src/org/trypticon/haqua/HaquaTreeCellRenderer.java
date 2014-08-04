@@ -18,6 +18,8 @@
 
 package org.trypticon.haqua;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.JTree;
 import javax.swing.UIManager;
 import javax.swing.plaf.UIResource;
@@ -29,6 +31,7 @@ import java.awt.Component;
  * @author trejkaz
  */
 public class HaquaTreeCellRenderer extends DefaultTreeCellRenderer {
+    @NotNull
     @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         // We know DefaultTreeCellRenderer returns itself.

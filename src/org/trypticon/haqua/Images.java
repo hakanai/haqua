@@ -18,6 +18,9 @@
 
 package org.trypticon.haqua;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
@@ -36,7 +39,7 @@ class Images {
         return graphicsConfiguration.createCompatibleImage(width, height, BufferedImage.TRANSLUCENT);
     }
 
-    static int[] getPixels(BufferedImage image, int x, int y, int w, int h, int[] pixels) {
+    static int[] getPixels(@NotNull BufferedImage image, int x, int y, int w, int h, @Nullable int[] pixels) {
         if (w == 0 || h == 0) {
             return new int[0];
         }
@@ -56,7 +59,7 @@ class Images {
         return image.getRGB(x, y, w, h, pixels, 0, w);
     }
 
-    static void setPixels(BufferedImage image, int x, int y, int w, int h, int[] pixels) {
+    static void setPixels(@NotNull BufferedImage image, int x, int y, int w, int h, @Nullable int[] pixels) {
         if (pixels == null || w == 0 || h == 0) {
             return;
         } else if (pixels.length < w * h) {

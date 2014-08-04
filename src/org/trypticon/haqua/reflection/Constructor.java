@@ -18,6 +18,8 @@
 
 package org.trypticon.haqua.reflection;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -30,6 +32,7 @@ public class Constructor<T> {
         this.delegate = delegate;
     }
 
+    @NotNull
     public T newInstance(Object... args) {
         try {
             return delegate.newInstance(args);

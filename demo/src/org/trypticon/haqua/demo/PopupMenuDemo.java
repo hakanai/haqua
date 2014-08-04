@@ -18,6 +18,8 @@
 
 package org.trypticon.haqua.demo;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -31,6 +33,7 @@ import javax.swing.JPopupMenu;
  * @author trejkaz
  */
 public class PopupMenuDemo implements Demo {
+    @NotNull
     @Override
     public String getName() {
         return "Popup Menus";

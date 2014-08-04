@@ -18,6 +18,9 @@
 
 package org.trypticon.haqua;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.awt.image.BufferedImage;
 
 /**
@@ -25,8 +28,9 @@ import java.awt.image.BufferedImage;
  */
 abstract class PerPixelFilter extends AbstractFilter {
 
+    @Nullable
     @Override
-    public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+    public BufferedImage filter(@NotNull BufferedImage source, @Nullable BufferedImage destination) {
         if (destination == null) {
             destination = createCompatibleDestImage(source, null);
         }

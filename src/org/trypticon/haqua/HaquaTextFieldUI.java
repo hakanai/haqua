@@ -19,6 +19,8 @@
 package org.trypticon.haqua;
 
 import com.apple.laf.AquaTextFieldUI;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -30,13 +32,14 @@ import java.awt.Rectangle;
  * @author trejkaz
  */
 public class HaquaTextFieldUI extends AquaTextFieldUI {
+    @NotNull
     @SuppressWarnings("UnusedDeclaration") // called via reflection
     public static ComponentUI createUI(JComponent component) {
         return new HaquaTextFieldUI();
     }
 
     @Override
-    public Dimension getPreferredSize(JComponent c) {
+    public Dimension getPreferredSize(@NotNull JComponent c) {
         Dimension size = super.getPreferredSize(c);
         if (c.getParent() instanceof JComboBox) {
             // Height of a normal text field is one pixel too tall for a combo box.
@@ -46,8 +49,12 @@ public class HaquaTextFieldUI extends AquaTextFieldUI {
     }
 
     @Override
+    @Nullable
     protected Rectangle getVisibleEditorRect() {
         Rectangle rectangle = super.getVisibleEditorRect();
+        if (rectangle == null) {
+            return null;
+        }
         if (getComponent().getParent() instanceof JComboBox) {
             // Correct the text position down one line to make up for shrinking the height.
             rectangle.y++;

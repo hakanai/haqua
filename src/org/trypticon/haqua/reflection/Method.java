@@ -18,6 +18,8 @@
 
 package org.trypticon.haqua.reflection;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -30,6 +32,7 @@ public class Method<T> {
         this.delegate = delegate;
     }
 
+    @NotNull
     @SuppressWarnings("unchecked") // would be fixable if Method would parameterise its return type...
     public T invoke(Object object, Object... args) {
         try {

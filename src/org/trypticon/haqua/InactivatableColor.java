@@ -18,6 +18,8 @@
 
 package org.trypticon.haqua;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.JComponent;
 import javax.swing.plaf.UIResource;
 import java.awt.Color;
@@ -28,10 +30,11 @@ import java.awt.Color;
 public class InactivatableColor extends Color implements UIResource {
 
     private final JComponent component;
+    @NotNull
     private final Color activeColor;
     private final Color inactiveColor;
 
-    public InactivatableColor(JComponent component, Color activeColor, Color inactiveColor) {
+    public InactivatableColor(JComponent component, @NotNull Color activeColor, Color inactiveColor) {
         super(activeColor.getRGB());
 
         this.component = component;

@@ -19,6 +19,7 @@
 package org.trypticon.haqua;
 
 import com.apple.laf.AquaButtonUI;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.AbstractButton;
 import javax.swing.JComponent;
@@ -29,13 +30,14 @@ import javax.swing.plaf.ComponentUI;
  * @author trejkaz
  */
 public class HaquaButtonUI extends AquaButtonUI {
+    @NotNull
     @SuppressWarnings("UnusedDeclaration") // called via reflection
     public static ComponentUI createUI(JComponent component) {
         return new HaquaButtonUI();
     }
 
     @Override
-    protected void installDefaults(AbstractButton b) {
+    protected void installDefaults(@NotNull AbstractButton b) {
         super.installDefaults(b);
 
         final Object segmentProp = b.getClientProperty("JButton.segmentPosition");

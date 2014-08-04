@@ -19,6 +19,7 @@
 package org.trypticon.haqua;
 
 import com.apple.laf.AquaTabbedPaneContrastUI;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JComponent;
 import javax.swing.plaf.ComponentUI;
@@ -31,18 +32,20 @@ import java.awt.event.MouseListener;
  * @author trejkaz
  */
 public class HaquaTabbedPaneUI extends AquaTabbedPaneContrastUI {
+    @NotNull
     @SuppressWarnings("UnusedDeclaration") // called via reflection
     public static ComponentUI createUI(JComponent component) {
         return new HaquaTabbedPaneUI();
     }
 
+    @NotNull
     @Override
     protected MouseListener createMouseListener() {
         return new CustomMouseHandler();
     }
 
     @Override
-    protected void paintCUITab(Graphics g, int tabPlacement, Rectangle tabRect, boolean isSelected, boolean frameActive, boolean isLeftToRight, int nonRectIndex) {
+    protected void paintCUITab(Graphics g, int tabPlacement, @NotNull Rectangle tabRect, boolean isSelected, boolean frameActive, boolean isLeftToRight, int nonRectIndex) {
         // Don't extend the leftmost tab. It should remain the same size.
         //TODO: Pressed tab still lacks the solid line to the left.
         if ((isSelected || isPressedAt(nonRectIndex)) && nonRectIndex > 0) {

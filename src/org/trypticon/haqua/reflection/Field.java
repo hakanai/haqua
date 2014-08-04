@@ -18,6 +18,8 @@
 
 package org.trypticon.haqua.reflection;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.Modifier;
 
 /**
@@ -34,6 +36,7 @@ public class Field<T> {
         return (delegate.getModifiers() & Modifier.STATIC) != 0;
     }
 
+    @NotNull
     @SuppressWarnings("unchecked") // would be fixable if Field would parameterise its return type...
     public T get(Object object) {
         try {
