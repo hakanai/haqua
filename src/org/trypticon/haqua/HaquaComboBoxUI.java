@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.ListCellRenderer;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.ComboPopup;
@@ -79,6 +80,11 @@ public class HaquaComboBoxUI extends AquaComboBoxUI {
         return new Rectangle(insets.left, insets.top,
                              width - (insets.left + insets.right + buttonSize),
                              height - (insets.top + insets.bottom));
+    }
+
+    @Override
+    protected ListCellRenderer createRenderer() {
+        return new HaquaComboBoxRenderer(comboBox);
     }
 
     private class HaquaComboBoxLayoutManager extends BasicComboBoxUI.ComboBoxLayoutManager {

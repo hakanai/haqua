@@ -58,6 +58,7 @@ JButton:
 JComboBox:
 
 * Popup sets its JList background to match the popup itself.
+* Popup renders in the correct orientation for the combo box which owns it.
 * Text field on editable combo boxes lines up properly with the button.
   (ComboBoxPaintingTest)
 * Text field on editable combo boxes is no longer painted in the wrong
