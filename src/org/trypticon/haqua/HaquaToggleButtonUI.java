@@ -18,44 +18,27 @@
 
 package org.trypticon.haqua;
 
-import com.apple.laf.AquaButtonUI;
+import com.apple.laf.AquaButtonToggleUI;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.AbstractButton;
 import javax.swing.JComponent;
-import javax.swing.border.Border;
 import javax.swing.plaf.ComponentUI;
 
 /**
  * @author trejkaz
  */
-public class HaquaButtonUI extends AquaButtonUI {
+public class HaquaToggleButtonUI extends AquaButtonToggleUI {
     @NotNull
     @SuppressWarnings("UnusedDeclaration") // called via reflection
     public static ComponentUI createUI(JComponent component) {
-        return new HaquaButtonUI();
+        return new HaquaToggleButtonUI();
     }
 
     @Override
     protected void installDefaults(@NotNull AbstractButton b) {
         super.installDefaults(b);
 
-        fixSegmentPositionBug(b);
-    }
-
-    /**
-     * Works around a bug where switching the look and feel at runtime clears the border for segmented buttons.
-     *
-     * @param button the button.
-     */
-    static void fixSegmentPositionBug(AbstractButton button) {
-        final Object segmentProp = button.getClientProperty("JButton.segmentPosition");
-        if (segmentProp != null) {
-            final Border border = button.getBorder();
-            if (border == null) {
-                button.setBorder(HaquaButtonExtendedTypes.getBorderForPosition(
-                        button, button.getClientProperty("JButton.buttonType"), segmentProp));
-            }
-        }
+        HaquaButtonUI.fixSegmentPositionBug(b);
     }
 }

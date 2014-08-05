@@ -55,6 +55,10 @@ JButton:
 
 * When switching look and feel at runtime, segmented buttons no longer lose their borders.
 
+JToggleButton:
+
+* When switching look and feel at runtime, segmented toggle buttons no longer lose their borders.
+
 JComboBox:
 
 * Popup sets its JList background to match the popup itself.
