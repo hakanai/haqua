@@ -15,6 +15,9 @@ X.X [XXXX-XX-XX]
          to be to the left if the component orientation is right-to-left.
   Fixed: Tree collapsed + selected icons painting in the wrong orientation for right-to-left.
   Fixed: IndexOutOfBoundsException on a JTabbedPane with no tabs.
+  Fixed: Tree expand and collapse icons weren't animating because of a compromise made to get
+         the right colour, but I have found a better trick to get the right colour, so the
+         animation now works as well.
 
 0.1 [2014-06-21]
 

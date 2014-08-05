@@ -26,6 +26,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.IconUIResource;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
@@ -51,6 +52,8 @@ public class HaquaTreeUI extends AquaTreeUI {
     private Icon pressedSelectedRtlCollapsedIcon;
     private Icon pressedSelectedExpandedIcon;
     private int selectionBackgroundForIcons;
+
+    private boolean paintingSelectedRow;
 
     private AdditionalHandler handler;
 
@@ -134,7 +137,7 @@ public class HaquaTreeUI extends AquaTreeUI {
         }
 
         new RecolourFilter().filter(image, image);
-        return new ImageIcon(image);
+        return new IconUIResource(new ImageIcon(image));
     }
 
     @Override
@@ -194,26 +197,33 @@ public class HaquaTreeUI extends AquaTreeUI {
         // painting the control in the wrong location while it is animating.
         bounds = getPathBounds(tree, path);
 
-        if (tree.isPathSelected(path) && FocusUtils.isInActiveWindow(tree)) {
-
-            // Trick the superclass into thinking we're using custom icons, so that it won't use its own
-            // native painter which paints the wrong colour.
-            // This causes us to lose the animation, but this is less bad than the arrow being the wrong colour.
-            Icon oldExpandedIcon = getExpandedIcon();
-            Icon oldCollapsedIcon = getCollapsedIcon();
-            try {
-                lazyInitialiseIcons();
-                boolean ltr = tree.getComponentOrientation().isLeftToRight();
-                setExpandedIcon(fIsPressed ? pressedSelectedExpandedIcon : selectedExpandedIcon);
-                setCollapsedIcon(fIsPressed ? (ltr ? pressedSelectedCollapsedIcon : pressedSelectedRtlCollapsedIcon)
-                                            : (ltr ? selectedCollapsedIcon : selectedRtlCollapsedIcon));
-                super.paintExpandControl(g, clipBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf);
-            } finally {
-                setExpandedIcon(oldExpandedIcon);
-                setCollapsedIcon(oldCollapsedIcon);
-            }
-        } else {
+        boolean oldPaintingSelectedRow = paintingSelectedRow;
+        paintingSelectedRow = tree.isPathSelected(path) && FocusUtils.isInActiveWindow(tree);
+        try {
+            lazyInitialiseIcons();
             super.paintExpandControl(g, clipBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf);
+        } finally {
+            paintingSelectedRow = oldPaintingSelectedRow;
+        }
+    }
+
+    @Override
+    public Icon getCollapsedIcon() {
+        boolean ltr = tree.getComponentOrientation().isLeftToRight();
+        if (paintingSelectedRow) {
+            return fIsPressed ? (ltr ? pressedSelectedCollapsedIcon : pressedSelectedRtlCollapsedIcon)
+                    : (ltr ? selectedCollapsedIcon : selectedRtlCollapsedIcon);
+        } else {
+            return super.getCollapsedIcon();
+        }
+    }
+
+    @Override
+    public Icon getExpandedIcon() {
+        if (paintingSelectedRow) {
+            return fIsPressed ? pressedSelectedExpandedIcon : selectedExpandedIcon;
+        } else {
+            return super.getExpandedIcon();
         }
     }
 
