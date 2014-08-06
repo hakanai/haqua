@@ -81,6 +81,11 @@ JPopupMenu:
 * Popup menus have the proper rounded corners.
   (PopupMenuRoundedCornersTest)
 
+JList:
+
+* JList dodges a NullPointerException which can happen in some cases when popped up from a
+  combo box.
+
 JTable:
 
 * Rows are painted with stripes.

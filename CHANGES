@@ -7,6 +7,8 @@ X.X [XXXX-XX-XX]
     New: Editable combo box no longer paints the text field in the wrong location when
          component orientation is right-to-left.
     New: Combo box popups now render in the correct orientation.
+    New: List box dodges a NullPointerException which can happen in some cases when popped up
+         from a combo box.
 
   Fixed: Toolbars anywhere in the window would drag the window - now only the top one does it.
   Fixed: Tree bounds extended to the right to allow clicking anywhere in the row, but that has
