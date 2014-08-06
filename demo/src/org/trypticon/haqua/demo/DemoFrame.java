@@ -56,9 +56,8 @@ public class DemoFrame extends JFrame {
         orientationGroup.add(ltrButton);
         orientationGroup.add(rtlButton);
 
-        activateButton.putClientProperty("JButton.buttonType", "textured");
-//        activateButton.putClientProperty("JButton.buttonType", "segmentedTextured");
-//        activateButton.putClientProperty("JButton.segmentPosition", "only");
+        activateButton.putClientProperty("JButton.buttonType", "segmentedTextured");
+        activateButton.putClientProperty("JButton.segmentPosition", "only");
         activateButton.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent event) {
@@ -75,9 +74,8 @@ public class DemoFrame extends JFrame {
             }
         });
 
-        ltrButton.putClientProperty("JButton.buttonType", "textured");
-//        ltrButton.putClientProperty("JButton.buttonType", "segmentedTextured");
-//        ltrButton.putClientProperty("JButton.segmentPosition", "first");
+        ltrButton.putClientProperty("JButton.buttonType", "segmentedTextured");
+        ltrButton.putClientProperty("JButton.segmentPosition", "first");
         ltrButton.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent event) {
@@ -88,9 +86,8 @@ public class DemoFrame extends JFrame {
             }
         });
 
-        rtlButton.putClientProperty("JButton.buttonType", "textured");
-//        rtlButton.putClientProperty("JButton.buttonType", "segmentedTextured");
-//        rtlButton.putClientProperty("JButton.segmentPosition", "last");
+        rtlButton.putClientProperty("JButton.buttonType", "segmentedTextured");
+        rtlButton.putClientProperty("JButton.segmentPosition", "last");
         rtlButton.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent event) {

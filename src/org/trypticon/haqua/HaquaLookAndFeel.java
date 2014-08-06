@@ -56,6 +56,7 @@ public class HaquaLookAndFeel extends AquaLookAndFeel {
         super.initClassDefaults(defaults);
 
         defaults.put("ButtonUI", "org.trypticon.haqua.HaquaButtonUI");
+        defaults.put("ToggleButtonUI", "org.trypticon.haqua.HaquaToggleButtonUI");
         defaults.put("TextFieldUI", "org.trypticon.haqua.HaquaTextFieldUI");
         defaults.put("ComboBoxUI", "org.trypticon.haqua.HaquaComboBoxUI");
         defaults.put("ProgressBarUI", "org.trypticon.haqua.HaquaProgressBarUI");

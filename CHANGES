@@ -7,6 +7,8 @@ X.X [XXXX-XX-XX]
     New: Editable combo box no longer paints the text field in the wrong location when
          component orientation is right-to-left.
     New: Combo box popups now render in the correct orientation.
+    New: When switching look and feel at runtime, segmented toggle buttons no longer lose
+         their borders.
     New: List box dodges a NullPointerException which can happen in some cases when popped up
          from a combo box.
 
@@ -15,6 +17,9 @@ X.X [XXXX-XX-XX]
          to be to the left if the component orientation is right-to-left.
   Fixed: Tree collapsed + selected icons painting in the wrong orientation for right-to-left.
   Fixed: IndexOutOfBoundsException on a JTabbedPane with no tabs.
+  Fixed: Tree expand and collapse icons weren't animating because of a compromise made to get
+         the right colour, but I have found a better trick to get the right colour, so the
+         animation now works as well.
 
 0.1 [2014-06-21]
 
