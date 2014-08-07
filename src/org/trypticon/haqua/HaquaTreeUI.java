@@ -28,7 +28,6 @@ import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.IconUIResource;
 import javax.swing.tree.TreeCellRenderer;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -38,8 +37,6 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * @author trejkaz
@@ -70,13 +67,11 @@ public class HaquaTreeUI extends AquaTreeUI {
             handler = new AdditionalHandler();
         }
         tree.addMouseListener(handler);
-        tree.addPropertyChangeListener("componentOrientation", handler);
     }
 
     @Override
     protected void uninstallListeners() {
         tree.removeMouseListener(handler);
-        tree.removePropertyChangeListener("componentOrientation", handler);
         super.uninstallListeners();
     }
 
@@ -173,14 +168,11 @@ public class HaquaTreeUI extends AquaTreeUI {
             // Trick the handler the superclass will create into storing the selection background colour
             // into a field it uses when it clears the background before drawing the icon.
             Color oldBackground = tree.getBackground();
-            boolean oldIgnoreRepaint = tree.getIgnoreRepaint();
             try {
-                tree.setIgnoreRepaint(true);
                 tree.setBackground(UIManager.getColor("Tree.selectionBackground"));
                 super.handleExpandControlClick(path, mouseX, mouseY);
             } finally {
                 tree.setBackground(oldBackground);
-                tree.setIgnoreRepaint(oldIgnoreRepaint);
             }
         } else {
             super.handleExpandControlClick(path, mouseX, mouseY);
@@ -201,7 +193,27 @@ public class HaquaTreeUI extends AquaTreeUI {
         paintingSelectedRow = tree.isPathSelected(path) && FocusUtils.isInActiveWindow(tree);
         try {
             lazyInitialiseIcons();
-            super.paintExpandControl(g, clipBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf);
+
+            // There is some suspicious code in AquaTreeUI#paintExpandControl which is used
+            // only when orientation is right to left:
+            //      middleXOfKnob = clipBounds.x + clipBounds.width / 2;
+            //
+            // This should probably be something like:
+            //      middleXOfKnob = bounds.x + bounds.width + (getRightChildIndent() - 1);
+            //
+            // Funnily enough, BasicTreeUI seems to get it right, so I think someone at Apple
+            // was confusing the bounds with the clip bounds.
+            // The clip bounds isn't used for anything *other* than this dodgy code, so I
+            // figure we can massage it so that the values Apple see are the values they
+            // should have been using in the first place.
+
+            int correctValue = bounds.x + bounds.width + (getRightChildIndent() - 1);
+            int appleValue = clipBounds.x + clipBounds.width / 2;
+            Rectangle newClipBounds = new Rectangle(clipBounds);
+            newClipBounds.x += (correctValue - appleValue);
+
+            super.paintExpandControl(g, newClipBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf);
+
         } finally {
             paintingSelectedRow = oldPaintingSelectedRow;
         }
@@ -227,7 +239,7 @@ public class HaquaTreeUI extends AquaTreeUI {
         }
     }
 
-    private class AdditionalHandler implements MouseListener, PropertyChangeListener {
+    private class AdditionalHandler implements MouseListener {
         @Override
         public void mousePressed(MouseEvent event) {
             TreePath pressedPath = getClosestPathForLocation(tree, event.getX(), event.getY());
@@ -251,15 +263,6 @@ public class HaquaTreeUI extends AquaTreeUI {
 
         @Override
         public void mouseClicked(MouseEvent event) {
-        }
-
-        @Override
-        public void propertyChange(PropertyChangeEvent event) {
-            treeState.invalidateSizes();
-            TreeModel model = tree.getModel();
-            if (model != null) {
-                treeState.invalidatePathBounds(new TreePath(model.getRoot()));
-            }
         }
     }
 }
