@@ -60,6 +60,7 @@ public class HaquaLookAndFeel extends AquaLookAndFeel {
         defaults.put("TextFieldUI", "org.trypticon.haqua.HaquaTextFieldUI");
         defaults.put("ComboBoxUI", "org.trypticon.haqua.HaquaComboBoxUI");
         defaults.put("ProgressBarUI", "org.trypticon.haqua.HaquaProgressBarUI");
+        defaults.put("ListUI", "org.trypticon.haqua.HaquaListUI");
         defaults.put("TableUI", "org.trypticon.haqua.HaquaTableUI");
         defaults.put("TreeUI", "org.trypticon.haqua.HaquaTreeUI");
         defaults.put("PanelUI", "org.trypticon.haqua.HaquaPanelUI");
