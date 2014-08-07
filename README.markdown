@@ -43,7 +43,7 @@ JMenuBar:
 
 * The Help menu only acts like a proper help menu if the text on it is "Help" (which
   is of course only the case in English.)
-  (HelpMenuTest, JI-9012514)
+  (HelpMenuTest, [JDK-8043949](https://bugs.openjdk.java.net/browse/JDK-8043949))
 
 
 Hacks in use
