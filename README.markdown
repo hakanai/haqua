@@ -53,11 +53,13 @@ Hacks in use
 
 JButton:
 
-* When switching look and feel at runtime, segmented buttons no longer lose their borders.
+* When switching look and feel at runtime, segmented buttons no longer lose their borders
+  (SegmentedButtonBorderLossTest, JI-9014067)
 
 JToggleButton:
 
-* When switching look and feel at runtime, segmented toggle buttons no longer lose their borders.
+* When switching look and feel at runtime, segmented toggle buttons no longer lose their borders
+  (SegmentedButtonBorderLossTest, JI-9014067)
 
 JComboBox:
 
