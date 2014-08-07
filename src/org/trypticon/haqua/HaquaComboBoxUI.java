@@ -98,10 +98,19 @@ public class HaquaComboBoxUI extends AquaComboBoxUI {
         public void layoutContainer(final Container parent) {
             delegate.layoutContainer(parent);
 
+            Rectangle bounds = new Rectangle();
+
+            if (editor != null && comboBox.isEditable()) {
+                bounds = editor.getBounds(bounds);
+                bounds.y ++;
+                editor.setBounds(bounds);
+            }
+
             if (arrowButton != null && comboBox.isEditable()) {
                 // Arrow button is one pixel too far to the left for editable combo boxes.
-                Rectangle bounds = arrowButton.getBounds();
-                bounds.x += 1;
+                bounds = arrowButton.getBounds(bounds);
+                bounds.x ++;
+                bounds.y ++;
                 arrowButton.setBounds(bounds);
             }
         }

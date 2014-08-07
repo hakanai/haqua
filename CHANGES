@@ -20,6 +20,8 @@ X.X [XXXX-XX-XX]
   Fixed: Tree expand and collapse icons weren't animating because of a compromise made to get
          the right colour, but I have found a better trick to get the right colour, so the
          animation now works as well.
+  Fixed: Baseline now matches for editable and non-editable combo boxes so that the top and
+         bottom line up properly when using baseline alignment.
 
 0.1 [2014-06-21]
 

@@ -18,13 +18,8 @@
 
 package org.trypticon.haqua.demo.problems;
 
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
-import java.awt.FlowLayout;
+import javax.swing.*;
+import java.awt.*;
 
 public class ComboBoxPaintingTest implements Runnable {
     public static void main(String[] args) {
@@ -33,18 +28,30 @@ public class ComboBoxPaintingTest implements Runnable {
 
     @Override
     public void run() {
-        JLabel label = new JLabel("Editable combo box:");
+        JLabel textFieldLabel = new JLabel("Text field:");
+
+        JTextField textField = new JTextField(8);
+
+        JLabel editableLabel = new JLabel("Editable:");
 
         // Notice that the button positioning is incorrect and that the highlighting does
         // not go all the way around the combo box.
-        JComboBox<String> comboBox = new JComboBox<>(new String[] { "Item 1", "Item 2", "Item 3" });
-        comboBox.setEditable(true);
+        JComboBox<String> editableComboBox = new JComboBox<>(new String[] { "Item 1", "Item 2", "Item 3" });
+        editableComboBox.setEditable(true);
+
+        JLabel nonEditableLabel = new JLabel("Non-editable:");
+
+        JComboBox<String> nonEditableComboBox = new JComboBox<>(new String[] { "Item 1", "Item 2", "Item 3" });
 
         FlowLayout layout = new FlowLayout(FlowLayout.LEADING);
         layout.setAlignOnBaseline(true);
         JPanel panel = new JPanel(layout);
-        panel.add(label);
-        panel.add(comboBox);
+        panel.add(textFieldLabel);
+        panel.add(textField);
+        panel.add(editableLabel);
+        panel.add(editableComboBox);
+        panel.add(nonEditableLabel);
+        panel.add(nonEditableComboBox);
 
         JFrame frame = new JFrame();
         frame.setContentPane(panel);
