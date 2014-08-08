@@ -32,18 +32,18 @@ JComboBox:
 
 * The border doesn't paint correctly over the text field of an editable combo box
   (it should surround the whole field, but only surrounds the combo box button.)
-  (ComboBoxPaintingTest)
+  (ComboBoxPaintingTest, JI-9014066)
 
 JTabbedPane:
 
 * The currently-pressed tab still lacks the line to the left.
-  (TabbedPanePaintingTest)
+  (TabbedPanePaintingTest, JI-9014065)
 
 JMenuBar:
 
 * The Help menu only acts like a proper help menu if the text on it is "Help" (which
   is of course only the case in English.)
-  (HelpMenuTest, JI-9012514)
+  (HelpMenuTest, [JDK-8043949](https://bugs.openjdk.java.net/browse/JDK-8043949))
 
 
 Hacks in use
@@ -53,18 +53,20 @@ Hacks in use
 
 JButton:
 
-* When switching look and feel at runtime, segmented buttons no longer lose their borders.
+* When switching look and feel at runtime, segmented buttons no longer lose their borders
+  (SegmentedButtonBorderLossTest, JI-9014067)
 
 JToggleButton:
 
-* When switching look and feel at runtime, segmented toggle buttons no longer lose their borders.
+* When switching look and feel at runtime, segmented toggle buttons no longer lose their borders
+  (SegmentedButtonBorderLossTest, JI-9014067)
 
 JComboBox:
 
 * Popup sets its JList background to match the popup itself.
 * Popup renders in the correct orientation for the combo box which owns it.
 * Text field on editable combo boxes lines up properly with the button.
-  (ComboBoxPaintingTest)
+  (ComboBoxPaintingTest, JI-9014066)
 * Text field on editable combo boxes is no longer painted in the wrong
   location when component orientation is right-to-left.
 
@@ -124,7 +126,7 @@ JToolBar:
 JTabbedPane:
 
 * The selected/pressed tab is painted one extra pixel to the left, to match the native look better.
-  (TabbedPanePaintingTest)
+  (TabbedPanePaintingTest, JI-9014065)
 
 JScrollPane:
 
