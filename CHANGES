@@ -22,6 +22,8 @@ X.X [XXXX-XX-XX]
          animation now works as well.
   Fixed: Baseline now matches for editable and non-editable combo boxes so that the top and
          bottom line up properly when using baseline alignment.
+  Fixed: Editable combo boxes at small and mini size now properly line up the text field and
+         button (the demo also now properly shows all three sizes.)
 
 0.1 [2014-06-21]
 

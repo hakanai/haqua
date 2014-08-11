@@ -39,8 +39,13 @@ public class HaquaTextFieldUI extends AquaTextFieldUI {
     public Dimension getPreferredSize(@NotNull JComponent c) {
         Dimension size = super.getPreferredSize(c);
         if (c.getParent() instanceof JComboBox) {
-            // Height of a normal text field is one pixel too tall for a combo box.
-            size.height--;
+            Object sizeVariant = ((JComponent) c.getParent()).getClientProperty("JComponent.sizeVariant");
+            // Height of a normal text field is too tall for a combo box, by a differing amount depending on size.
+            if ("small".equals(sizeVariant) || "mini".equals(sizeVariant)) {
+                size.height -= 2;
+            } else {
+                size.height--;
+            }
         }
         return size;
     }

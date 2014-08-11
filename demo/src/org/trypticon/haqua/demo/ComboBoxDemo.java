@@ -73,7 +73,7 @@ public class ComboBoxDemo implements Demo {
 
             JComboBox<String> editableComboBox = new JComboBox<>(new String[] { "One", "Two", "Three" });
             editableComboBox.setEditable(true);
-            popDownComboBox.putClientProperty("JComponent.sizeVariant", sizeVariant);
+            editableComboBox.putClientProperty("JComponent.sizeVariant", sizeVariant);
             grid[4][i + 1] = editableComboBox;
         }
 

@@ -21,17 +21,11 @@ package org.trypticon.haqua;
 import com.apple.laf.AquaComboBoxUI;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.ListCellRenderer;
+import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.ComboPopup;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Insets;
-import java.awt.LayoutManager;
-import java.awt.Rectangle;
+import java.awt.*;
 
 /**
  * @author trejkaz
@@ -52,6 +46,13 @@ public class HaquaComboBoxUI extends AquaComboBoxUI {
         popup.getList().setBackground( ((Component) popup).getBackground() );
 
         return popup;
+    }
+
+    @Override
+    protected void configureEditor() {
+        // Aqua doesn't set the size variant on the editor to match the combo box itself.
+        Object sizeVariant = comboBox.getClientProperty("JComponent.sizeVariant");
+        ((JComponent) editor).putClientProperty("JComponent.sizeVariant", sizeVariant);
     }
 
     @NotNull
@@ -95,14 +96,23 @@ public class HaquaComboBoxUI extends AquaComboBoxUI {
         }
 
         @Override
-        public void layoutContainer(final Container parent) {
+        public void layoutContainer(Container parent) {
             delegate.layoutContainer(parent);
 
             Rectangle bounds = new Rectangle();
 
+            // Presumably because we corrected the size of the text field, the button and text field
+            // now no longer align, so we have to correct what the default layout has done.
+            Object sizeVariant = comboBox.getClientProperty("JComponent.sizeVariant");
+
             if (editor != null && comboBox.isEditable()) {
                 bounds = editor.getBounds(bounds);
-                bounds.y ++;
+
+                // small and mini seem to line up properly already.
+                if (!"small".equals(sizeVariant) && !"mini".equals(sizeVariant)) {
+                    bounds.y ++;
+                }
+
                 editor.setBounds(bounds);
             }
 
@@ -110,7 +120,15 @@ public class HaquaComboBoxUI extends AquaComboBoxUI {
                 // Arrow button is one pixel too far to the left for editable combo boxes.
                 bounds = arrowButton.getBounds(bounds);
                 bounds.x ++;
-                bounds.y ++;
+
+                // mini seems to line up properly already. Oddly, small and regular are misaligned
+                // in different directions.
+                if ("small".equals(sizeVariant)) {
+                    bounds.y --;
+                } else if (!"mini".equals(sizeVariant)) {
+                    bounds.y ++;
+                }
+
                 arrowButton.setBounds(bounds);
             }
         }
