@@ -11,6 +11,7 @@ X.X [XXXX-XX-XX]
          their borders.
     New: List box dodges a NullPointerException which can happen in some cases when popped up
          from a combo box.
+    New: JScrollPane and JScrollBar work correctly in right-to-left orientation.
 
   Fixed: Toolbars anywhere in the window would drag the window - now only the top one does it.
   Fixed: Tree bounds extended to the right to allow clicking anywhere in the row, but that has

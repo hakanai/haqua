@@ -132,6 +132,12 @@ JScrollPane:
 
 * Scroll panes (and their contained viewports) are non-opaque by default, to fix appearance
   the pane contains a non-opaque component.
+* Scroll panes scroll the right direction when horizontally scrolled in a right-to-left
+  orientation.
+
+JScrollBar:
+
+* Scroll bars paint the right way around when in a right-to-left orientation.
 
 JOptionPane:
 

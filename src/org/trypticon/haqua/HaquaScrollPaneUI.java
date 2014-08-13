@@ -21,11 +21,10 @@ package org.trypticon.haqua;
 import com.apple.laf.AquaScrollPaneUI;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.JComponent;
-import javax.swing.JScrollPane;
-import javax.swing.LookAndFeel;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 /**
  * @author trejkaz
@@ -37,10 +36,40 @@ public class HaquaScrollPaneUI extends AquaScrollPaneUI {
         return new HaquaScrollPaneUI();
     }
 
+    @Override
     protected void installDefaults(JScrollPane scrollPane) {
         super.installDefaults(scrollPane);
 
         // Opacity on JScrollPane has to match JViewport.
         LookAndFeel.installProperty(scrollPane, "opaque", UIManager.get("Viewport.opaque"));
     }
+
+    @Override
+    protected MouseWheelListener createMouseWheelListener() {
+        return new FixedXYMouseWheelHandler();
+    }
+
+    protected class FixedXYMouseWheelHandler extends XYMouseWheelHandler {
+        @Override
+        public void mouseWheelMoved(MouseWheelEvent event) {
+
+            // "shift down" is the condition XYMouseWheelHandler is looking for as well.
+            // Somewhere on the native side, Apple must have translated actual horizontal scroll events into
+            // shift-down vertical scrolling for Swing, which doesn't technically support horizontal scrolling.
+            if (event.isShiftDown() &&
+                    !scrollpane.getComponentOrientation().isLeftToRight()) {
+
+                // AquaScrollPaneUI doesn't reverse the scroll direction when operating in right-to-left.
+                event = new MouseWheelEvent(
+                        event.getComponent(), event.getID(), event.getWhen(), event.getModifiers(),
+                        event.getX(), event.getY(), event.getXOnScreen(), event.getYOnScreen(),
+                        event.getClickCount(), event.isPopupTrigger(),
+                        event.getScrollType(), -event.getScrollAmount(),
+                        -event.getWheelRotation(), -event.getPreciseWheelRotation());
+            }
+
+            super.mouseWheelMoved(event);
+        }
+    }
+
 }
