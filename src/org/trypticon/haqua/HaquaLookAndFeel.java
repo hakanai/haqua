@@ -69,6 +69,10 @@ public class HaquaLookAndFeel extends AquaLookAndFeel {
         defaults.put("ScrollPaneUI", "org.trypticon.haqua.HaquaScrollPaneUI");
         defaults.put("ScrollBarUI", "org.trypticon.haqua.HaquaScrollBarUI");
         defaults.put("ViewportUI", "org.trypticon.haqua.HaquaViewportUI");
+        defaults.put("MenuItemUI", "org.trypticon.haqua.HaquaMenuItemUI");
+        defaults.put("CheckBoxMenuItemUI", "org.trypticon.haqua.HaquaMenuItemUI");
+        defaults.put("RadioButtonMenuItemUI", "org.trypticon.haqua.HaquaMenuItemUI");
+        defaults.put("MenuUI", "org.trypticon.haqua.HaquaMenuUI");
         defaults.put("PopupMenuUI", "org.trypticon.haqua.HaquaPopupMenuUI");
         defaults.put("OptionPaneUI", "org.trypticon.haqua.HaquaOptionPaneUI");
     }
@@ -77,7 +81,7 @@ public class HaquaLookAndFeel extends AquaLookAndFeel {
     protected void initComponentDefaults(@NotNull UIDefaults defaults) {
         super.initComponentDefaults(defaults);
 
-        final Object controlSmallFont = defaults.get("IconButton.font");
+        Object controlSmallFont = defaults.get("IconButton.font");
 
         // Default titled border is the etched line style, but this one looks more native.
         defaults.put("TitledBorder.border", defaults.get("TitledBorder.aquaVariant"));

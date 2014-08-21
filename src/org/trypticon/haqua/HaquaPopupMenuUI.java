@@ -92,6 +92,7 @@ public class HaquaPopupMenuUI extends AquaPopupMenuUI {
 
         popupWindow.setBackground(new Color(0, 0, 0, 0));
         popupWindow.setContentPane(new DropShadowPanel(popupMenu));
+        popupWindow.applyComponentOrientation(popupMenu.getComponentOrientation());
 
         // Restore the window to its original state once it's hidden, because the PopupFactory
         // will cache the instance and things like tooltips will be messed up.
@@ -148,11 +149,18 @@ public class HaquaPopupMenuUI extends AquaPopupMenuUI {
             wrapSize = popupMenu.getPreferredSize();
             setLayout(null);
             add(popupMenu);
-            popupMenu.setBounds(LEFT_MARGIN, TOP_MARGIN, wrapSize.width, wrapSize.height);
-            popupMenu.doLayout();
+            doLayout();
 
             setPreferredSize(new Dimension(wrapSize.width + SHADOW_RADIUS * 2 + 2,
                     wrapSize.height + SHADOW_RADIUS * 2 + 2));
+        }
+
+        @Override
+        public void doLayout() {
+            super.doLayout();
+
+            popupMenu.setBounds(LEFT_MARGIN, TOP_MARGIN, wrapSize.width, wrapSize.height);
+            popupMenu.doLayout();
         }
 
         @Override

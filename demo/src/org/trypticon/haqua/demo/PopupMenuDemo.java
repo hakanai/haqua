@@ -28,6 +28,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import java.awt.ComponentOrientation;
 
 /**
  * @author trejkaz
@@ -50,8 +51,14 @@ public class PopupMenuDemo implements Demo {
         JComboBox<String> normalComboBox = new JComboBox<>(new String[] { "One", "Two", "Three" });
         grid[0][1] = normalComboBox;
 
-        JButton buttonWithPopup = new JButton("Act");
-        JPopupMenu popupMenu = new JPopupMenu("Popup");
+        final JPopupMenu popupMenu = new JPopupMenu("Popup");
+        JButton buttonWithPopup = new JButton("Act") {
+            @Override
+            public void setComponentOrientation(ComponentOrientation o) {
+                super.setComponentOrientation(o);
+                popupMenu.applyComponentOrientation(o);
+            }
+        };
         popupMenu.add(new JMenuItem("One"));
         popupMenu.add(new JMenuItem("Two"));
         popupMenu.add(new JMenuItem("Three"));
