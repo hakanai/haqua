@@ -1,0 +1,7 @@
+language: java
+os: macosx
+jdk:
+  - oraclejdk8
+  - oraclejdk7
+script: ant
+

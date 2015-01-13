@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<project name="haqua" default="jar" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+<project name="haqua" default="all-jars" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
     <property file="app.properties"/>
 
     <target name="compile">
@@ -29,6 +29,8 @@
             <compilerarg value="-XDignore.symbol.file"/>
         </javac>
     </target>
+
+    <target name="all-jars" depends="jar, javadoc-jar, sources-jar"/>
 
     <target name="jar" depends="compile">
         <jar jarfile="build/haqua-${app.version}.jar">
