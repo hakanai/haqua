@@ -1,5 +1,5 @@
 language: java
-os: macosx
+os: osx
 jdk:
   - oraclejdk8
   - oraclejdk7
