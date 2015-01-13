@@ -18,35 +18,42 @@
 
 package org.trypticon.haqua;
 
-import com.apple.laf.AquaTextFieldUI;
-import org.jetbrains.annotations.NotNull;
-
 import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 
 /**
+ * An icon which renders another icon flipped left-to-right.
+ *
  * @author trejkaz
  */
-public class HaquaTextFieldUI extends AquaTextFieldUI {
-    @NotNull
-    @SuppressWarnings("UnusedDeclaration") // called via reflection
-    public static ComponentUI createUI(JComponent component) {
-        return new HaquaTextFieldUI();
+class FlippedIcon implements Icon {
+    private final Icon delegate;
+
+    FlippedIcon(Icon delegate) {
+        this.delegate = delegate;
     }
 
     @Override
-    public Dimension getPreferredSize(@NotNull JComponent c) {
-        Dimension size = super.getPreferredSize(c);
-        if (c.getParent() instanceof JComboBox) {
-            Object sizeVariant = ((JComponent) c.getParent()).getClientProperty("JComponent.sizeVariant");
-            // Height of a normal text field is too tall for a combo box, by a differing amount depending on size.
-            if ("small".equals(sizeVariant) || "mini".equals(sizeVariant)) {
-                size.height -= 2;
-            } else {
-                size.height--;
-            }
+    public void paintIcon(Component c, Graphics g, int x, int y) {
+        Graphics2D gCopy = (Graphics2D) g.create();
+        try {
+            int width = getIconWidth();
+            gCopy.translate(x, y);
+            gCopy.transform(AffineTransform.getScaleInstance(-1, 1));
+            delegate.paintIcon(c, gCopy, -width, 0);
+        } finally {
+            gCopy.dispose();
         }
-        return size;
+    }
+
+    @Override
+    public int getIconWidth() {
+        return delegate.getIconWidth();
+    }
+
+    @Override
+    public int getIconHeight() {
+        return delegate.getIconHeight();
     }
 }

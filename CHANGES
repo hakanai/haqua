@@ -11,6 +11,11 @@ X.X [XXXX-XX-XX]
          their borders.
     New: List box dodges a NullPointerException which can happen in some cases when popped up
          from a combo box.
+    New: JScrollPane and JScrollBar work correctly in right-to-left orientation.
+    New: JPopupMenu's popup is set to the proper orientation.
+    New: JMenuItem, JCheckBoxMenuItem, JRadioButtonMenuItem and JMenu paint in the proper
+         location when in right-to-left orientation.
+    New: JMenu paints the arrow the right way around when in right-to-left orientation.
 
   Fixed: Toolbars anywhere in the window would drag the window - now only the top one does it.
   Fixed: Tree bounds extended to the right to allow clicking anywhere in the row, but that has
@@ -20,6 +25,10 @@ X.X [XXXX-XX-XX]
   Fixed: Tree expand and collapse icons weren't animating because of a compromise made to get
          the right colour, but I have found a better trick to get the right colour, so the
          animation now works as well.
+  Fixed: Baseline now matches for editable and non-editable combo boxes so that the top and
+         bottom line up properly when using baseline alignment.
+  Fixed: Editable combo boxes at small and mini size now properly line up the text field and
+         button (the demo also now properly shows all three sizes.)
 
 0.1 [2014-06-21]
 

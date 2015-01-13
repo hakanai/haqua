@@ -32,12 +32,12 @@ JComboBox:
 
 * The border doesn't paint correctly over the text field of an editable combo box
   (it should surround the whole field, but only surrounds the combo box button.)
-  (ComboBoxPaintingTest, JI-9014066)
+  (ComboBoxPaintingTest, JDK-8054572)
 
 JTabbedPane:
 
 * The currently-pressed tab still lacks the line to the left.
-  (TabbedPanePaintingTest, JI-9014065)
+  (TabbedPanePaintingTest, JDK-8054573)
 
 JMenuBar:
 
@@ -54,19 +54,19 @@ Hacks in use
 JButton:
 
 * When switching look and feel at runtime, segmented buttons no longer lose their borders
-  (SegmentedButtonBorderLossTest, JI-9014067)
+  (SegmentedButtonBorderLossTest, JDK-8054571)
 
 JToggleButton:
 
 * When switching look and feel at runtime, segmented toggle buttons no longer lose their borders
-  (SegmentedButtonBorderLossTest, JI-9014067)
+  (SegmentedButtonBorderLossTest, JDK-8054571)
 
 JComboBox:
 
 * Popup sets its JList background to match the popup itself.
 * Popup renders in the correct orientation for the combo box which owns it.
 * Text field on editable combo boxes lines up properly with the button.
-  (ComboBoxPaintingTest, JI-9014066)
+  (ComboBoxPaintingTest, JDK-8054572)
 * Text field on editable combo boxes is no longer painted in the wrong
   location when component orientation is right-to-left.
 
@@ -82,10 +82,23 @@ JProgressBar:
 * Circular progress bars properly display as circular when UI is installed.
   (ProgressBarIndeterminateCircleTest)
 
+JMenuItem:
+
+* JMenuItem, JCheckBoxMenuItem, JRadioButtonMenuItem and JMenu paint in the proper location
+  when oriented right-to-left.
+  (JDK-7124366)
+
+JMenu:
+
+* Menu arrows point the right direction when oriented right-to-left.
+  (JDK-7124366)
+
 JPopupMenu:
 
 * Popup menus have the proper rounded corners.
   (PopupMenuRoundedCornersTest)
+* The popup comes up with the proper component orientation.
+  (JDK-7124366)
 
 JList:
 
@@ -126,12 +139,18 @@ JToolBar:
 JTabbedPane:
 
 * The selected/pressed tab is painted one extra pixel to the left, to match the native look better.
-  (TabbedPanePaintingTest, JI-9014065)
+  (TabbedPanePaintingTest, JDK-8054573)
 
 JScrollPane:
 
 * Scroll panes (and their contained viewports) are non-opaque by default, to fix appearance
   the pane contains a non-opaque component.
+* Scroll panes scroll the right direction when horizontally scrolled in a right-to-left
+  orientation.
+
+JScrollBar:
+
+* Scroll bars paint the right way around when in a right-to-left orientation.
 
 JOptionPane:
 

@@ -54,19 +54,19 @@ public class HaquaComboBoxRenderer extends JLabel implements ListCellRenderer, U
     private AquaMenuPainter myMenuPainter = new AquaMenuPainter();
 
     // Provides space for a checkbox, and is translucent
-    public HaquaComboBoxRenderer(final JComboBox comboBox) {
-        super();
+    public HaquaComboBoxRenderer(JComboBox comboBox) {
         fComboBox = comboBox;
     }
 
     // Don't include checkIcon space, because this is also used for button size calculations
     // - the popup-size calc will get checkIcon space from getInsets
+    @Override
     public Dimension getPreferredSize() {
         // From BasicComboBoxRenderer - trick to avoid zero-height items
-        final Dimension size;
+        Dimension size;
 
-        final String text = getText();
-        if ((text == null) || ("".equals(text))) {
+        String text = getText();
+        if (text == null || text.isEmpty()) {
             setText(" ");
             size = super.getPreferredSize();
             setText("");
@@ -77,16 +77,19 @@ public class HaquaComboBoxRenderer extends JLabel implements ListCellRenderer, U
     }
 
     // Don't paint the border here, it gets painted by the UI
-    protected void paintBorder(final Graphics g) {
+    @Override
+    protected void paintBorder(Graphics g) {
 
     }
 
+    @Override
     public int getBaseline(int width, int height) {
         return super.getBaseline(width, height) - 1;
     }
 
     // Really means is the one with the mouse over it
-    public Component getListCellRendererComponent(final JList list, final Object value, int index, final boolean isSelected, final boolean cellHasFocus) {
+    @Override
+    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         fInList = (index >= 0); // When the button wants the item painted, it passes in -1
         fSelected = isSelected;
         if (index < 0) {
@@ -103,7 +106,7 @@ public class HaquaComboBoxRenderer extends JLabel implements ListCellRenderer, U
 
         // Fix for Radar # 3204287 where we ask for an item at a negative index!
         if (index >= 0) {
-            final Object item = fComboBox.getItemAt(index);
+            Object item = fComboBox.getItemAt(index);
             fChecked = fInList && item != null && item.equals(fComboBox.getSelectedItem());
         } else {
             fChecked = false;
@@ -142,6 +145,7 @@ public class HaquaComboBoxRenderer extends JLabel implements ListCellRenderer, U
         return this;
     }
 
+    @Override
     public Insets getInsets(Insets insets) {
         if (insets == null) insets = new Insets(0, 0, 0, 0);
         insets.top = 1;
@@ -157,15 +161,25 @@ public class HaquaComboBoxRenderer extends JLabel implements ListCellRenderer, U
             insets.right = (fInList && !fEditable ? 16 + 7 : 5);
         }
 
+        //HAQUA: Text is too close to the top of the combo box in these sizes and also makes it impossible
+        // to align both the text and the borders.
+        Object sizeVariant = fComboBox.getClientProperty("JComponent.sizeVariant");
+        if ("small".equals(sizeVariant) || "mini".equals(sizeVariant)) {
+            insets.top++;
+//            insets.bottom--;
+//            y++;
+        }
+
         return insets;
     }
 
-    protected void setDrawCheckedItem(final boolean drawCheckedItem) {
+    protected void setDrawCheckedItem(boolean drawCheckedItem) {
         this.fDrawCheckedItem = drawCheckedItem;
     }
 
     // Paint this component, and a checkbox if it's the selected item and not in the button
-    protected void paintComponent(final Graphics g) {
+    @Override
+    protected void paintComponent(Graphics g) {
         if (fInList) {
             if (fSelected && !fEditable) {
                 myMenuPainter.paintSelectedMenuItemBackground(g, getWidth(), getHeight());
@@ -175,7 +189,7 @@ public class HaquaComboBoxRenderer extends JLabel implements ListCellRenderer, U
             }
 
             if (fChecked && !fEditable && fDrawCheckedItem) {
-                final int y = getHeight() - 4;
+                int y = getHeight() - 4;
                 g.setColor(getForeground());
 
                 //HAQUA: Draw the check mark in the right location.
