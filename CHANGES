@@ -1,5 +1,5 @@
 
-X.X [XXXX-XX-XX]
+0.2 [2014-02-12]
 
     New: OK/Cancel on JOptionPane will properly flip for right-to-left locales.
     New: Clicking the expander no longer momentarily paints the expander far over the left of
