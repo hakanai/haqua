@@ -1,7 +1,4 @@
 language: java
 os: osx
-osx_image:
-  - xcode7.3  # default, should be JDK 7?
-  - xcode8    # for jdk 8
 script: ant
 
