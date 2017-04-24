@@ -1,3 +1,5 @@
 language: java
 os: osx
+# Seems like the thing about Ant already being present was a lie.
+before_install: brew update && brew install ant
 script: ant
